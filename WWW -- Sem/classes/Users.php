@@ -243,81 +243,59 @@ class Users{
             <div class="paymentBox">
             Způsob doručení:    
             <div>
-            <label class="w170">Česká pošta Balík do ruky</label><input type="radio" name="deliveryMethod" value="1" class="radioButton"">
+            <label class="w170">Česká pošta Balík do ruky</label><input type="radio" name="deliveryMethod" value="1" class="radioButton" '; if(!empty($_POST["deliveryMethod"])){echo 'checked';}echo '>
             </div>
             <div>
-            <label>GLS</label><input type="radio" name="deliveryMethod" value="2" class="radioButton">
+            <label>GLS</label><input type="radio" name="deliveryMethod" value="2" class="radioButton" '; if(!empty($_POST["deliveryMethod"])){echo 'checked';}echo ' >
             </div>
             <div>
-            <label>PPL</label><input type="radio" name="deliveryMethod" value="3" class="radioButton">
+            <label>PPL</label><input type="radio" name="deliveryMethod" value="3" class="radioButton" '; if(!empty($_POST["deliveryMethod"])){echo 'checked';}echo '>
             </div>
             </div>
             <div class="paymentBox">
             Způsob platby:
             <div>
-            <label >Platba kartou</label><input type="radio" name="paymentMethod" value="1" class="radioButton">
+            <label >Platba kartou</label><input type="radio" name="paymentMethod" value="1" class="radioButton" '; if(!empty($_POST["paymentMethod"])){echo 'checked';}echo '>
             </div>
             <div>
-            <label >Dobírka</label><input type="radio" name="paymentMethod" value="2" class="radioButton">
+            <label >Dobírka</label><input type="radio" name="paymentMethod" value="2" class="radioButton" '; if(!empty($_POST["paymentMethod"])){echo 'checked';}echo '>
             </div>
             </div>
             <div class="paymentBox">';
-        if(!empty($_POST["addressOption"])){//pokud jsme vybrali adresu, sama se nam vyplni do fieldu
+        $row = "";
+        if(!empty($_POST["addressOption"])) {//pokud jsme vybrali adresu, sama se nam vyplni do fieldu
             $conn = connection::getConnection();
             $result = $conn->query("SELECT * FROM db_dev.delivery_info WHERE id_delivery_info = {$_POST["addressOption"]}");
             $row = $result->fetch_assoc();
-            echo '
-            <div>
-            <label>Jméno: </label><input type="text" name="first_name" value="'.$row["first_name"].'">
-            </div>
-            <div>
-            <label>Příjmení: </label><input type="text" name="last_name" value="'.$row["last_name"].'">
-            </div>
-            <div>
-            <label>Telefonní číslo: </label><input type="text" name="phone_number" value="'.$row["phone_number"].'">
-            </div>
-            <div>
-            <label>Město: </label><input type="text" name="city" value="'.$row["city"].'">
-            </div>
-            <div>
-            <label>Ulice: </label><input type="text" name="street" value="'.$row["street"].'">
-            </div>
-            <div>
-            <label>Číslo popisné: </label><input type="text" name="home_number" value="'.$row["home_number"].'">
-            </div>
-            <div>
-            <label>PSČ: </label><input type="text" name="zip_code" value="'.$row['zip_code'].'">
-            </div>';
-        }else{//pokud jsme adresu nevybrali, fieldy budou prazdne
-            echo '
-            <div>
-            <label>Jméno: </label><input type="text" name="first_name">
-            </div>
-            <div>
-            <label>Příjmení: </label><input type="text" name="last_name">
-            </div>
-            <div>
-            <label>Telefonní číslo: </label><input type="text" name="phone_number" >
-            </div>
-            <div>
-            <label>Město: </label><input type="text" name="city" >
-            </div>
-            <div>
-            <label>Ulice: </label><input type="text" name="street">
-            </div>
-            <div>
-            <label>Číslo popisné: </label><input type="text" name="home_number">
-            </div>
-            <div>
-            <label>PSČ: </label><input type="text" name="zip_code">
-            </div>';
         }
-        echo '<div id = "saveAdressInfo">
+            echo '
+            <div>
+            <label>Jméno: </label><input type="text" name="first_name" ';if(!empty($row)){echo 'value="'.$row["first_name"].'"';}echo '>
+            </div>
+            <div>
+            <label>Příjmení: </label><input type="text" name="last_name"  ';if(!empty($row)){echo 'value="'.$row["last_name"].'"';}echo '>
+            </div>
+            <div>
+            <label>Telefonní číslo: </label><input type="text" name="phone_number"  ';if(!empty($row)){echo 'value="'.$row["phone_number"].'"';}echo '>
+            </div>
+            <div>
+            <label>Město: </label><input type="text" name="city"  ';if(!empty($row)){echo 'value="'.$row["city"].'"';}echo '>
+            </div>
+            <div>
+            <label>Ulice: </label><input type="text" name="street"  ';if(!empty($row)){echo 'value="'.$row["street"].'"';}echo '>
+            </div>
+            <div>
+            <label>Číslo popisné: </label><input type="text" name="home_number"  ';if(!empty($row)){echo 'value="'.$row["home_number"].'"';}echo '>
+            </div>
+            <div>
+            <label>PSČ: </label><input type="text" name="zip_code"  ';if(!empty($row)){echo 'value="'.$row["zip_code"].'"';}echo '>
+            </div>';
+
+        echo '<div id="saveAdressInfo">
                     <label class="w300">Uložit info pro další objednávku? </label>
                     <input id="checkBoxSaveAddress" class="pRelTop10" type="checkbox" name="save_delivery_info">
             </div>
             <div>
-                <form method="post" name="address" action="index.php?pages=payment">
                     <label>Vyplnit adresu: </label>
                     <select onchange="this.form.submit()"  name="addressOption">
                         <option disabled selected>Vyberte adresu</option>';
@@ -330,21 +308,16 @@ class Users{
                                 echo '<option  value=' . $row["id_delivery_info"] . ' >' . $row["city"] . '</option>';
                             }
                         }
-            echo '</select>
-            </div>
+        echo '</select></div>
         </div>
             <div>
                 <input type="submit" value="Objednat" id="orderButton" name="orderButton">
             </div>
-        </div>
-                </form>
     </form>';
     }
 
     static function printInformation($textInfo){//vyskakovaci okno
         echo "<script type='text/javascript'>alert('$textInfo');</script>";
     }
-
-
 }
 ?>
