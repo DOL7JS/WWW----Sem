@@ -93,7 +93,12 @@ li a {
     text-decoration: none;
     font-size: 20px;
 }
-
+.fRight{
+    float: right;
+}
+.blackSolid{
+    border: black solid 1px;
+}
 .active{
     background-color: forestgreen;
 }
@@ -407,6 +412,7 @@ input[name=completeOrder]{
 input[id=show-menu]{
     display: none;
 }
+/* Pokud je checkbox checked, zobrazi #menu*/
 input[type=checkbox]:checked ~ #menu{
     display: block;
 }
@@ -660,20 +666,17 @@ input[type=checkbox]:checked ~ #menu{
     .w200{
         width: 110px;
     }
-    /*/////////////////////*/
     ul {
         position: static;
         display: none;
     }
-    /*Create vertical spacing*/
     li {
         margin-bottom: 1px;
     }
-    /*Make all menu links full width*/
     ul li, li a {
         width: 100%;
     }
-    /*Display 'show menu' link*/
+    /*zobrazi Menu*/
     .show-menu {
         display:block;
     }
