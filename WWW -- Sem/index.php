@@ -15,19 +15,6 @@ require_once "./classes/Users.php";
 require_once "./classes/Orders.php";
 require_once "./classes/Sales.php";
 require_once "./classes/ValidityChecker.php";
-
-
-//echo '<br>';
-//print_r($_FILES);
-//echo '<br>';
-//print_r($_POST);
-//echo '<br>';
-//print_r($_GET);
-//echo '<br>';
-//if(!empty($_SESSION)){
-  //  print_r($_SESSION);
-//}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
