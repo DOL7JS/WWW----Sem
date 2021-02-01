@@ -423,8 +423,9 @@ input[type=checkbox]:checked ~ #menu{
     width: 100px;
     height: 100px;
 }
-#goodsInfo{
+.goodsInfo{
     display: flex;
+    width: 500px;
 }
 .pRelRight5{
     position: relative;
@@ -437,7 +438,7 @@ input[type=checkbox]:checked ~ #menu{
     position: relative;
     bottom: 7px;
 }
-#goodsSizeEdit{
+.goodsSizeEdit{
     display: flex;
 }
 #imgCart{
@@ -739,7 +740,7 @@ input[type=checkbox]:checked ~ #menu{
         height: 200px;
 
      }
-    #goodsSizeEdit{
+    .goodsSizeEdit{
         margin-left: 30px;
     }
     .w50h50{

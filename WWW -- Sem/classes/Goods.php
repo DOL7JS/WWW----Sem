@@ -38,18 +38,18 @@ class Goods
                         }else{
                                 echo '<div  class="goods pad100-50-0-50">';
                         }
-                        echo '<tr>
-                                <td><img id="imageGoods" src='.$row["image"].' alt='.$row["image"].'></td>
+                        echo '
+                                <img id="imageGoods" src='.$row["image"].' alt='.$row["image"].'>
                                 <section id="textZbozi">
-                                <div><td> '.$row["name"].'</td></div>';
+                                <div> '.$row["name"].'</div>';
                                 if($row["price"]!=$row["price"]*(1-$row["sale"]/100)){
-                                        echo '<div><td>Původní cena: '.$row["price"]." Kč".'</td></div>';
+                                        echo '<div>Původní cena: '.$row["price"]." Kč".'</div>';
                                 }
                                 echo '<div>
-                                            <td>Cena: '.$row["price"]*(1-$row["sale"]/100)." Kč".'</td>
+                                            Cena: '.$row["price"]*(1-$row["sale"]/100)." Kč".'
                                      </div>';
-                                echo '</section>
-                                <form '; if($row["sale"]==0) {echo 'class="pTop25"';} echo ' method="post" action='.$_SERVER['REQUEST_URI'].'&action=add&nameOfGoods='.$row["id_goods"].'>
+                                echo '</section>';
+                                echo '<form '; if($row["sale"]==0) {echo 'class="pTop25"';} echo ' method="post" action='.$_SERVER['REQUEST_URI'].'&action=add&nameOfGoods='.$row["id_goods"].'>
                                 <select name="goodsSize">';
                                         $res = $conn->query("SELECT size FROM db_dev.goods JOIN db_dev.attribute a on db_dev.goods.id_goods = a.goods_id_goods WHERE id_goods = '{$row["id_goods"]}'");
                                         while($ro=$res->fetch_assoc()){
@@ -60,10 +60,9 @@ class Goods
                                 if(empty($_SESSION["role"])){//pokud je nezaregistrovany uzivatel, muze dat do kosiku
                                         echo '<input type="submit" value="Do košíku">';
                                 }else if ($_SESSION["role"]!="Admin"&&$_SESSION["role"]!="Zaměstnanec"){//pokud neni uzivatel Admin nebo Zamestnanec, muze dat do kosiku
-                                        echo '<input type="submit" value="Do košíku"></form>
-                         </tr>';
-                        }
-                        echo '</div>';
+                                        echo '<input type="submit" value="Do košíku">';
+                                }
+                        echo '</form></div>';
                 }
                 echo '</div>';
         }
@@ -311,7 +310,7 @@ class Goods
                 $result = $conn->query($sql);
                 while($row = $result->fetch_assoc()){//prochazeni vybraneho zbozi
                         echo '<div class="listRow" id="listRowGoods">';
-                        echo '<div id="goodsInfo">';
+                        echo '<div class="goodsInfo">';
 
                         echo '<div class="detailsInRow">';
                         echo "Zboží: ".$row["goodsName"];
@@ -323,7 +322,7 @@ class Goods
 
                         echo '</div>';
 
-                        echo '<div id="goodsSizeEdit">';
+                        echo '<div class="goodsSizeEdit">';
                         echo '<div class="w100h100Goods">';
                         echo '<img class="w100h100"  src='.$row["image"].'>';
                         echo '</div>';
