@@ -56,7 +56,7 @@ static function printAllSales(){//vypis vsech slev
 static function deleteSale(){//odebrani slevy
     $conn = connection::getConnection();
     $idGoods = $_GET["saleId"];
-    $conn->query("UPDATE db_dev.attribute SET sale=NULL WHERE goods_id_goods='$idGoods';");
+    $conn->query("UPDATE db_dev.attribute SET sale=0 WHERE goods_id_goods='$idGoods';");
     header("Location:index.php?pages=saleManagement");
 }
 static function printActualSales(){//vypis vsech aktualnich slev
@@ -161,7 +161,7 @@ static function printActualSales(){//vypis vsech aktualnich slev
                 <div><td>Původní cena: '.$row["price"]." Kč".'</td></div>
                 <div><td>Aktuální cena: '.$row["price"]*(1-($row["sale"]/100))." Kč, -".$row["sale"].' %</td></div>
                 </section>
-                <form method="post" action='.$_SERVER['REQUEST_URI'].'&action=add&nameOfGoods='.$row["name"].'>
+                <form method="post" action='.$_SERVER['REQUEST_URI'].'&action=add&idGoods='.$row["id_goods"].'>
                 <select name="goodsSize">';
 
         $res = $conn->query("SELECT size FROM db_dev.goods JOIN db_dev.attribute a on db_dev.goods.id_goods = a.goods_id_goods WHERE id_goods = '{$row["id_goods"]}'");

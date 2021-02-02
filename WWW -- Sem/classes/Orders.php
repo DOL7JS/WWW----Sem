@@ -158,7 +158,7 @@ class Orders{
                 if($result->num_rows==0){
                     $conn->query("INSERT INTO  db_dev.ordered_goods (id_ordered_goods, quantity, order_id_order, goods_id_goods, color, size, price) VALUES 
                         ('{$ordered_goods["id_ordered_goods"]}','{$ordered_goods["quantity"]}','{$ordered_goods["order_id_order"]}','{$ordered_goods["goods_id_goods"]}',
-                         '{$ordered_goods["color"]}','{$ordered_goods["size"]}','{$ordered_goods["price"]}')");//TODO dopsat vlozeni do ordered_goods
+                         '{$ordered_goods["color"]}','{$ordered_goods["size"]}','{$ordered_goods["price"]}')");
                 }
             }
             fclose($handle);

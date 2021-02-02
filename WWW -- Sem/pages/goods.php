@@ -1,7 +1,7 @@
 <?php
 
-if(!empty($_GET["action"])&&$_GET["action"]=="add"&&!empty($_GET["nameOfGoods"])){
-    Cart::addToCart($_GET["nameOfGoods"].",".$_POST["goodsSize"]);//přidání zboží do košíku
+if(!empty($_GET["action"])&&$_GET["action"]=="add"&&!empty($_GET["idGoods"])){
+    Cart::addToCart($_GET["idGoods"].",".$_POST["goodsSize"]);//přidání zboží do košíku
     header('Location: '.$_SESSION['actualURL'].'');
     unset($_SESSION['actualURL']);
 }

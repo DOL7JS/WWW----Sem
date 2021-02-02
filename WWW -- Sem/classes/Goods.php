@@ -49,11 +49,10 @@ class Goods
                                             Cena: '.$row["price"]*(1-$row["sale"]/100)." Kč".'
                                      </div>';
                                 echo '</section>';
-                                echo '<form '; if($row["sale"]==0) {echo 'class="pTop25"';} echo ' method="post" action='.$_SERVER['REQUEST_URI'].'&action=add&nameOfGoods='.$row["id_goods"].'>
+                                echo '<form '; if($row["sale"]==0) {echo 'class="pTop25"';} echo ' method="post" action='.$_SERVER['REQUEST_URI'].'&action=add&idGoods='.$row["id_goods"].'>
                                 <select name="goodsSize">';
                                         $res = $conn->query("SELECT size FROM db_dev.goods JOIN db_dev.attribute a on db_dev.goods.id_goods = a.goods_id_goods WHERE id_goods = '{$row["id_goods"]}'");
                                         while($ro=$res->fetch_assoc()){
-                                                echo $ro["size"];
                                                 echo '<option value='.$ro["size"].'>'.$ro["size"].'</option>';
                                         }
                                 echo '</select>';
@@ -70,7 +69,7 @@ class Goods
                 $orderBy = array(array("ascending","Vzestupně"),array("descending","Sestupně"));
                 if(!empty($_POST["available"])&&$_POST["available"]=="unavailable"){
                         if($position=="goods"){
-                                echo '<label class="orderByFilter" >Cena: </label><select  disabled name="orderBy"  onchange="this.form.submit()">';
+                                echo '<label class="orderByFilter" >Cena: </label><select disabled name="orderBy"  onchange="this.form.submit()">';
                         }else{
                                 echo '<label class="w130">Cena: </label><select id="orderByAddGoods" name="orderBy" class="orderByAddGoods inputsNextLabel"  disabled  onchange="this.form.submit()">';
                         }

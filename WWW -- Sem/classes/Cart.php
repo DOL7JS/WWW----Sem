@@ -3,29 +3,29 @@
 
 class Cart
 {
-    static function addToCart($goodsName)
+    static function addToCart($idSize)
     {
         if(!empty($_SESSION["cart"])){
-            if (!array_key_exists($goodsName, $_SESSION["cart"])) {
-                $_SESSION["cart"][$goodsName]["quantity"] = 1;
+            if (!array_key_exists($idSize, $_SESSION["cart"])) {
+                $_SESSION["cart"][$idSize]["quantity"] = 1;
             } else {
-                $_SESSION["cart"][$goodsName]["quantity"]++;
+                $_SESSION["cart"][$idSize]["quantity"]++;
             }
         }else{
-            $_SESSION["cart"][$goodsName]["quantity"] = 1;
+            $_SESSION["cart"][$idSize]["quantity"] = 1;
         }
     }
-    static function removeGoods($goodsName)
+    static function removeGoods($idSize)
     {
-        if($_SESSION["cart"][$goodsName]["quantity"]==1){
-            Cart::deleteGoods($goodsName);
+        if($_SESSION["cart"][$idSize]["quantity"]==1){
+            Cart::deleteGoods($idSize);
         }else{
-            $_SESSION["cart"][$goodsName]["quantity"]--;
+            $_SESSION["cart"][$idSize]["quantity"]--;
         }
     }
-    static function deleteGoods($goodsName)
+    static function deleteGoods($idSize)
     {
-        unset($_SESSION["cart"][$goodsName]);
+        unset($_SESSION["cart"][$idSize]);
     }
     static function printCart(){
         if(!empty($_SESSION["cart"])){//kontrola zda v kosiku je zbozi
@@ -35,7 +35,7 @@ class Cart
             foreach ($_SESSION["cart"] as $key => $value) {//prochazeni polozek v kosiku
                 $idSize = explode(",",$key);//rozdeleni nazvu a velikosti
                 $result = $conn->query("SELECT name,price,image,sale,color FROM db_dev.goods 
-                                                JOIN db_dev.attribute a on goods.id_goods = a.goods_id_goods WHERE id_goods='$idSize[0]'");//zjisteni informaci o zbozi na zaklade jmena
+                                                JOIN db_dev.attribute a on goods.id_goods = a.goods_id_goods WHERE id_goods='$idSize[0]'");//zjisteni informaci o zbozi na zaklade id
                 $row = $result->fetch_assoc();
                 $price = ($row["price"]*(1-$row["sale"]/100)) * $value["quantity"];//spocitani ceny zbozi na zaklade ceny, slevy a a poctu kusu
                 echo '<div class="listRow">';
@@ -50,16 +50,15 @@ class Cart
                         echo "<br>";
                         echo "<p class='detailCart'>Barva: ".Goods::getColor($row["color"])."</p>";
                     echo '</div>';
-
                     echo '<div class="imgOrderDetail">';
                         echo '<img id="imgCart" src='.$row["image"].' alt='.$row["image"].'>';
                     echo '</div>';
                     echo '<div id="btnsInCart" class="btnsInList">';
                         //delete - odebrat vsechno zbozi jednoho typu
                         //remove - snizit mnozstvi jednoho zbozi
-                        echo'<a href="index.php?pages=cart&action=add&goodsName=' . $key . '" ><img class="w50h50" src="./imgs/icons/plus.png" alt=" . $key . "></a>';
-                        echo'<a href="index.php?pages=cart&action=remove&goodsName=' . $key . '"><img class="w50h50" src="./imgs/icons/minus.png" alt=" . $key . "></a>';
-                        echo'<a href="index.php?pages=cart&action=delete&goodsName=' . $key . '"><img class="w50h50" src="./imgs/icons/trash.png" alt=" . $key . "></a>';
+                        echo'<a href="index.php?pages=cart&action=add&idGoods=' . $key . '" ><img class="w50h50" src="./imgs/icons/plus.png" alt=" . $key . "></a>';
+                        echo'<a href="index.php?pages=cart&action=remove&idGoods=' . $key . '"><img class="w50h50" src="./imgs/icons/minus.png" alt=" . $key . "></a>';
+                        echo'<a href="index.php?pages=cart&action=delete&idGoods=' . $key . '"><img class="w50h50" src="./imgs/icons/trash.png" alt=" . $key . "></a>';
                         echo '<br>';
                     echo '</div>';
                 echo '</div>';

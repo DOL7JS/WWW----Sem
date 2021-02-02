@@ -79,6 +79,7 @@
       <workItem from="1612175373253" duration="110000" />
       <workItem from="1612177029044" duration="2669000" />
       <workItem from="1612192316003" duration="5659000" />
+      <workItem from="1612272357051" duration="6423000" />
     </task>
     <servers />
   </component>
@@ -160,10 +161,10 @@
     </state>
     <state x="-1828" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1609073243788" />
     <state x="89" y="133" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1612196364028" />
-    <state x="691" y="196" width="789" height="610" key="find.popup" timestamp="1612194233874">
+    <state x="691" y="196" width="789" height="610" key="find.popup" timestamp="1612273467124">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="691" y="196" width="789" height="610" key="find.popup/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1612194233874" />
+    <state x="691" y="196" width="789" height="610" key="find.popup/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1612273467124" />
     <state x="687" y="196" width="793" height="610" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1612169685098" />
     <state x="781" y="291" key="refactoring.ChangeSignatureDialog" timestamp="1608291905297">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -177,21 +178,5 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1612091668201" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/classes/Sales.php</url>
-          <line>99</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/classes/Cart.php</url>
-          <line>65</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

@@ -1,7 +1,6 @@
 
 <label for="show-menu" class="show-menu">Menu</label><!--//kod pro responsivni menu převzat: https://medialoot.com/blog/how-to-create-a-responsive-navigation-menu-using-only-css/-->
 <input type="checkbox" id="show-menu">
-
 <ul id="menu">
     <li><a href="index.php?pages=homePage">Domů</a></li>
     <li><a href="index.php?pages=categories&gender=m">Muži</a></li>
@@ -10,11 +9,11 @@
     <li><a href="index.php?pages=sales">Akce</a></li>
     <?php
     if(!empty($_SESSION["loggedIn"])&&$_SESSION["loggedIn"]==true){
-
         if($_SESSION["role"]=="Admin"){
             echo '
                           <li class="fRight" ><a href="index.php?pages=logOut">Odhlásit se</a></li>  
-                          <li class="fRight"> <a href="index.php?pages=account">Můj účet</a></li><li class="fRight"> <a href="index.php?pages=usersManagement">Správa uživatelů</a></li>
+                          <li class="fRight"> <a href="index.php?pages=account">Můj účet</a></li>
+                          <li class="fRight"> <a href="index.php?pages=usersManagement">Správa uživatelů</a></li>
                           <li class="fRight" ><a href="index.php?pages=goodsManagement">Správa zboží</a></li>
                           <li class="fRight" ><a href="index.php?pages=saleManagement">Správa akcí</a></li>
                           <li class="fRight" ><a href="index.php?pages=ordersManagement">Správa objednávek</a></li>';

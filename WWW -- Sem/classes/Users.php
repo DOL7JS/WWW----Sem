@@ -45,7 +45,10 @@ class Users{
     }
     static function deleteUser($idUser){//odstraneni uzivatele, jeho adres, objednaneho zbozi, objednavek
         $conn = connection::getConnection();
-        $conn->query("DELETE FROM db_dev.delivery_info WHERE user_id_user= '$idUser'");
+        $result = $conn->query("SELECT id_order FROM db_dev.orders WHERE user_id_user = '$idUser'");
+        while($row=$result->fetch_assoc()){
+            $conn->query("DELETE FROM db_dev.order_address WHERE orders_id_order= '{$row["id_order"]}'");
+        }
         $conn->query("DELETE FROM db_dev.ordered_goods WHERE order_id_order= (SELECT id_order FROM orders WHERE user_id_user = '$idUser')");
         $conn->query("DELETE FROM db_dev.orders WHERE user_id_user= '$idUser'");
         $conn->query("DELETE FROM db_dev.user WHERE id_user= '$idUser'");
@@ -53,7 +56,7 @@ class Users{
     static function addUser(){//pridani uzivatele
         $conn = connection::getConnection();
         $email = $_POST["email"];
-        $password = $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+        $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
         $role = $_POST["role"];
         $result = $conn->query("SELECT * FROM db_dev.USER WHERE email = '$email'");
         if($result->num_rows==0){//kontrola zda uz v systemu neni uzivatel se stejnym emailem
