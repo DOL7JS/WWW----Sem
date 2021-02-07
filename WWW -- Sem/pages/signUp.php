@@ -1,7 +1,7 @@
 <h1>Registrace</h1>
 <?php
-if(!empty($_POST["email"])) {
-   Users::signUp();
+if(!empty($_POST["email"])&&!empty($_POST["password"])&&!empty($_POST["passwordConfirm"])) {
+   UserControl::signUp();
 }
 ?>
     <form action="" method="post" >

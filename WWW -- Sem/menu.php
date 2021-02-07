@@ -16,13 +16,15 @@
                           <li class="fRight"> <a href="index.php?pages=usersManagement">Správa uživatelů</a></li>
                           <li class="fRight" ><a href="index.php?pages=goodsManagement">Správa zboží</a></li>
                           <li class="fRight" ><a href="index.php?pages=saleManagement">Správa akcí</a></li>
-                          <li class="fRight" ><a href="index.php?pages=ordersManagement">Správa objednávek</a></li>';
+                          <li class="fRight" ><a href="index.php?pages=ordersManagement">Správa objednávek</a></li>
+                          <li class="fRight" ><a href="index.php?pages=categoryManagement">Správa typu zboží</a></li>';
         }else if($_SESSION["role"]=="Zaměstnanec"){
             echo '<li class="fRight" ><a href="index.php?pages=logOut">Odhlásit se</a></li>  
                             <li class="fRight"> <a href="index.php?pages=account">Můj účet</a></li>
                             <li class="fRight" ><a href="index.php?pages=goodsManagement">Správa zboží</a></li>
                             <li class="fRight" ><a href="index.php?pages=saleManagement">Správa akcí</a></li>
-                            <li class="fRight" ><a href="index.php?pages=ordersManagement">Správa objednávek</a></li>';
+                            <li class="fRight" ><a href="index.php?pages=ordersManagement">Správa objednávek</a></li>
+                            <li class="fRight" ><a href="index.php?pages=categoryManagement">Správa typu zboží</a></li>';
         }else{
             if(!empty($_SESSION["cart"])){
                 echo '    <li class="fRight blackSolid"><a class="active" href="index.php?pages=cart">Košík -- '.count($_SESSION["cart"]).'</a></li>';
@@ -45,13 +47,3 @@
     }
     ?>
 </ul>
-<script>
-    document.getElementById("changeGreen").onclick = function(){
-        document.getElementById("test").style.color = 'green';
-        <?php
-        $_POST['menu'] = "homePage";
-        ?>
-    }
-</script>
-
-

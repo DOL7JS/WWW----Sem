@@ -1,22 +1,30 @@
 <?php
 echo '<h1>Správa uživatelů</h1>';
-
-if(!empty($_POST["addUserButton"])){
-    ValidityChecker::checkValidityUsers();
+if(!empty($_SESSION["userEdited"])){
+    if($_SESSION["userEdited"]=='true'){
+        UserControl::printInformation('Uživatel upraven');
+    }else{
+        UserControl::printInformation('Uživatel s tímto emailem existuje');
+    }
+    unset($_SESSION["userEdited"]);
 }
-
 if(!empty($_GET["action"])&&$_GET["action"]=="deleteUser"){
-    Users::deleteUser($_GET["idUser"]);//odstraneni uzivatele
-    Users::printInformation('Uživatel odstraněn');
+    UserControl::deleteUser($_GET["idUser"]);
+    UserControl::printInformation('Uživatel odstraněn');
+    header("Location:index.php?pages=usersManagement");//prokliknuti na upravu uzivatele
+
 }
 if(!empty($_GET["action"])&&$_GET["action"]=="editUser"){
-    $_SESSION["idUser"] = $_GET["idUser"];
-    header("Location:index.php?pages=editUser");//prokliknuti na upravu uzivatele
+    header("Location:index.php?pages=editUser&idUser=".$_GET["idUser"]);//prokliknuti na upravu uzivatele
 }
 
-if(!empty($_POST["email"])&&!empty($_POST["password"])&&!empty($_POST["role"])){
-    Users::addUser();//pridani uzivatele
-    Users::printInformation('Uživatel přidán');
+if(!empty($_POST["addUserButton"])&&ValidityChecker::checkValidityUsers()){
+    if(UserControl::addUser($_POST["email"],$_POST["password"],$_POST["role"])){
+        UserControl::printInformation('Uživatel přidán');
+    }
 }
-Users::printAllUsers();
+echo '<div class=list>';
+    UserControl::printFormAddUser();
+    UserControl::printAllUsersAsAdmin();
+echo '</div>';
 ?>

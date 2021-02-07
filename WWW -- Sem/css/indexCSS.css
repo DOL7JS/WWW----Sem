@@ -1,5 +1,3 @@
-
-
 header{
     border: black solid;
     justify-content: space-between;
@@ -21,15 +19,14 @@ body{
     width: 250px;
     height: 410px
 }
-#homePageGoods{
+.homePageGoods{
     background-color: white;
     border: 3px black solid;
     margin:10px;
     width: 400px;
     height: 450px;
-    padding-top: 20%;
+    padding-top: 3%;
 }
-
 
 .allGoods{
     text-align: center;
@@ -37,11 +34,15 @@ body{
     flex-wrap: wrap;
     padding: 100px 100px;
 }
-#allGoodsHomePage{
+.allGoodsHomePage{
     text-align: center;
     display: flex;
     flex-wrap: wrap;
     padding: 100px 150px;
+}
+#resetFilterSale{
+    position: relative;
+    left: 130px;
 }
 
 h1{
@@ -103,10 +104,6 @@ li a {
     background-color: forestgreen;
 }
 
-#logo{
-    padding:0;
-    border: red solid 2px;
-}
 #noGoods{
     font-size: 50px;
     width: 400px;
@@ -151,7 +148,7 @@ label{
     position: relative;
     left: 30%;
 }
-#dFlexpRelLeft110{
+.dFlexpRelLeft110{
     display: flex;
     position: relative;
     left: 110px;
@@ -175,7 +172,7 @@ label{
     padding: 20px 10px;
     font-size: 40px;
 }
-#detailsInRowOrders{
+.detailsInRowOrders{
     padding: 20px 10px;
     font-size: 40px;
 }
@@ -215,15 +212,13 @@ label{
 .filter{
     border: solid black 5px;width: 1200px;background-color: white;margin-top: 10px
 }
-#imageGoods{
+.imageGoods{
     width:248px; height:248px;
 }
 .inputsNextLabel{
-    position: relative;top: -5px;
+    position: relative;bottom: 5px;
 }
-.inputsInSale{
-    position: relative;bottom: 7px;
-}
+
 #saveOrdersButton{
     width:250px;position: relative;left: 1365px;
 }
@@ -256,10 +251,9 @@ label{
     position: relative;
     bottom:7px;
 }
-#btnsInCart{
+.btnsInCart{
     position: relative;
     top: 200px;
-
 }
 .pRelLeft5{
     position: relative;
@@ -280,8 +274,7 @@ label{
     height: 100px;
     background-color: white;
     border: 3px black solid;
-    margin-top: 40px;
-    margin-left: 140px;
+    margin-top: 30px;
 
 }
 #totalPrice{
@@ -298,17 +291,42 @@ label{
 .w300{
     width: 300px;
 }
+.w250{
+    width: 250px;
+}
 .w200{
     width: 200px;
 }
-.p50{
-    padding: 50px;
+.p50-50-100-50{
+    padding: 50px 50px 100px 50px;
+}
+.w105{
+    width: 105px;
+}
+.w205{
+    width: 205px;
+}
+.pRelLeft460{
+    position: relative;
+    left: 460px;
+}
+.pRelRight10{
+    position: relative;
+    right: 10px;
+}
+.pRelLeft400{
+    position: relative;
+    left: 400px;
 }
 .dInline{
     display: inline;
 }
 .dFlex{
     display: flex;
+}
+.pRelRight70{
+    position: relative;
+    right: 70px;
 }
 .imgOrderDetail{
     width:230px;
@@ -318,7 +336,7 @@ label{
 .textCenter{
     text-align: center;
 }
-#goodsSection {
+.goodsSection {
     padding: 50px;
     width: 250px;
     background-color: white;
@@ -326,18 +344,18 @@ label{
     margin:10px;
     height: 410px
 }
-#imgSection {
+.imgSection {
     padding-top: 10%;
     width: 248px;
     height: 248px;
 }
-#nameSection{
+.nameSection{
     font-size: 50px;color: black;text-align: center; position:relative;bottom: 10px;
 }
-.pRelLeft314{
+#labelZip_code{
     position: relative;left: 314px;
 }
-.l344{
+#zip_code{
     left: 344px;
 }
 .l300{
@@ -357,10 +375,10 @@ label{
     position: relative;
     left: 700px;
 }
-#detailOrderButton{
+.detailOrderButton{
     background:transparent;
 }
-#completeCart{
+.completeCart{
     display: flex;
     width: 1200px;
 }
@@ -368,14 +386,14 @@ label{
     order: 2;margin-left: 600px;
 }
 
-input[name=completeOrder]{
+#completeOrderButton{
     height: 50px;width: 200px
 }
 #debitCard{
     background-color: white;width: 400px;position: relative;left: 35%;margin: 100px;border-radius: 10px;
 }
-.pad100-50-0-50{
-    padding: 100px 50px 0 50px;
+.pad100-50-50-50{
+    padding: 100px 50px 50px 50px;
 }
 .pTop25{
     padding-top: 25px;
@@ -405,7 +423,7 @@ input[name=completeOrder]{
     display: none;
     width: 400px;
 }
-#imgHomePage{
+.imgHomePage{
     width: 398px;height: 400px
 }
 
@@ -417,9 +435,7 @@ input[id=show-menu]{
 input[type=checkbox]:checked ~ #menu{
     display: block;
 }
-#goodsForm{
-    margin-top: 40px;
-}
+
 .w100h100{
     width: 100px;
     height: 100px;
@@ -439,15 +455,19 @@ input[type=checkbox]:checked ~ #menu{
     position: relative;
     bottom: 7px;
 }
-.goodsSizeEdit{
+.goodsEditAttribute{
     display: flex;
+    margin-right: 20px;
 }
-#imgCart{
+.imgCart{
     width: 230px;
     height: 230px;
 }
 @media only print{
     #menu{
+        display: none;
+    }
+    h1{
         display: none;
     }
     #saveOrdersButton{
@@ -472,25 +492,29 @@ input[type=checkbox]:checked ~ #menu{
     }
 }
 @media only screen and (max-width: 600px){
-    #imgSection{
+    .imgSection{
         height: 100px;
         width: 100px;
     }
-    .w100h100{
-        width: 200px;
-        height: 200px;
+    .pRelRight5{
+        position: relative;
+        right: 0;
     }
     #w170Size{
         width: 130px;
     }
-    #nameSection{
+    .nameSection{
         text-align: right;
     }
     #noGoods{
         font-size: 20px;
         width: 350px;
     }
-    #goodsSection{
+    .imageGoodsManagement{
+        width: 200px;
+        height: 200px;
+    }
+    .goodsSection{
         display: flex;
         height: 150px;
     }
@@ -501,15 +525,15 @@ input[type=checkbox]:checked ~ #menu{
     .allGoods{
         padding: 0 0 0 0;
     }
-    #imgHomePage{
+    .imgHomePage{
         width: 370px;
         height: 372px;
     }
-    #allGoodsHomePage{
+    .allGoodsHomePage{
         padding: 0 0 0 0;
         width: 400px;
     }
-    #homePageGoods{
+    .homePageGoods{
         width: 375px;
     }
     footer{
@@ -524,49 +548,44 @@ input[type=checkbox]:checked ~ #menu{
         position: relative;
         right: 50px;
     }
-    #orderByAddGoods{
-        position: relative;
-        right: 0px;
-    }
-    select[name=color]{
-        position: relative;
-        right: 55px;
-    }
     select[name=size]{
         position: relative;
         right: 50px;
+    }
+    #btnsInGoodsManagement{
+        position: relative;
+        left: 300px;
+    }
+    #colorAddGoods{
+        position: relative;
+        right: 5px;
+    }
+    .goodsEditAttribute{
+        margin-left: 100px;
     }
     select[name=typeOfGoods]{
         position: relative;
         right: 5px
     }
-
     input[name=reset]{
         position: relative;
         left: 200px;
     }
-    .orderByFilter{
-        position: relative;
-        right: 100px;
-    }
     #editUserForm{
         left: 0;
      }
-    #sizeFilter{
-        position: relative;
-        right: 100px;
-    }
-    #colorFilter{
-        position: relative;
-        right: 100px;
-    }
-
     .list {
         padding: 0 0 0 0;
     }
     .detailsInRow{
         font-size: 20px;
         padding: 35px 14px 0;
+    }
+    #addCategoryButton{
+        left: 150px;
+    }
+    .w250{
+        width: 150px;
     }
     .listRow{
         width: 400px;
@@ -576,16 +595,16 @@ input[type=checkbox]:checked ~ #menu{
         height: 100px;
         position: relative;
     }
-    #imgCart{
+    .imgCart{
         width: 100px;
         height: 100px;
     }
-    #btnsInCart {
+    .btnsInCart {
         position: relative;
         top: 130px;
         right: 145px;
     }
-    #completeCart{
+    .completeCart{
         display: block;
     }
     #totalPrice{
@@ -594,7 +613,10 @@ input[type=checkbox]:checked ~ #menu{
     .completeOrder{
         margin-left: 0;
     }
-    input[name=completeOrder] {
+    .orderByPriceFilter{
+        width: 110px;
+    }
+    #completeOrderButton{
         width: 380px;
     }
     .pRelLeft700{
@@ -603,7 +625,6 @@ input[type=checkbox]:checked ~ #menu{
     .paymentBox{
         width: 350px;
     }
-
     #orderButton{
         width: 380px;
     }
@@ -624,12 +645,12 @@ input[type=checkbox]:checked ~ #menu{
         top: 0px;
         left: 280px;
     }
-    #listRowMyOrders{
+    .listRowMyOrders{
         display: block;
         width: 400px;
     }
 
-    #detailsInRowOrders{
+    .detailsInRowOrders{
         font-size: 20px;
         padding: 35px 14px ;
     }
@@ -640,20 +661,20 @@ input[type=checkbox]:checked ~ #menu{
         padding: 10px;
         width: 360px;
     }
-    .l344{
+    #zip_code{
         left: 0;
     }
-    .l300{
+    #addAddress{
         left: 0;
     }
-    .pRelLeft314{
+    #labelZip_code{
         left: 0;
     }
-    #detailsInRowAdr{
+    .detailsInRowAdr{
         font-size: 20px;
         padding: 35px 14px;
     }
-    #detailsInRowCart{
+    .detailsInRowCart{
         font-size: 20px;
         padding: 35px 14px ;
         display: table;
@@ -692,7 +713,6 @@ input[type=checkbox]:checked ~ #menu{
         display: block;
         height: 60px;
     }
-
     #addSaleButton{
         position: relative;
         left: 170px;
@@ -701,7 +721,7 @@ input[type=checkbox]:checked ~ #menu{
         position: relative;
         right: 70px;
     }
-    #listRowOrders{
+    .listRowOrders{
         display: block;
     }
     .pRelTop100{
@@ -709,28 +729,12 @@ input[type=checkbox]:checked ~ #menu{
         left: 350px;
         top: -140px;
     }
-    #dFlexpRelLeft110{
+    .dFlexpRelLeft110{
         left: 15px;
         font-size: 20px;
     }
-    #typeOfGoodsAddGoods{
-        position: relative;
-        right: 0;
-    }
-    #colorAddGoods{
-        position: relative;
-        right: 0;
-    }
-    .orderByAddGoods{
-        position: relative;
-        right: 0;
-    }
-    #availableGoods{
-        position: relative;
-        right: 0;
-        width: 125px;
-    }
-    #listRowGoods{
+
+    .listRowGoods{
         display: block;
     }
     .w100h100Goods{
@@ -741,21 +745,18 @@ input[type=checkbox]:checked ~ #menu{
         height: 200px;
 
      }
-    .goodsSizeEdit{
-        margin-left: 30px;
-    }
     .w50h50{
         margin: 0;
         position: relative;
     }
-    #addGoodsButton{
+    .addGoodsButton{
         position: relative;
         left: 200px;
     }
-    #addFile{
+    .addFile{
         width: 210px;
     }
-    #iconDeleteSale{
+    .iconDeleteSale{
         left: 0;
     }
     #importJsonButton{
@@ -767,7 +768,7 @@ input[type=checkbox]:checked ~ #menu{
     #saveOrdersButton{
         left: 60px;
     }
-    #detailOrderButton{
+    .detailOrderButton{
         left: 0;
         top: 70px;
     }
@@ -778,16 +779,13 @@ input[type=checkbox]:checked ~ #menu{
     }
     #addUserButton{
         position: relative;
-        left: 130px;
+        left: 135px;
     }
     #iconsUserManagement{
         left: 0;
     }
-    #detailsInRowUsers{
+    .detailsInRowUsers{
         padding: 35px 14px ;
-    }
-    #orderByFilterSelect{
-        left:0;
     }
     #saveAdressInfo{
         display: flex;

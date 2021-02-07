@@ -1,3 +1,3 @@
 <?php
-Orders::printUserOrders();
+OrderControl::printMyOrders();
 ?>

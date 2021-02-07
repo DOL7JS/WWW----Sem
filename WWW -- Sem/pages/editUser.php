@@ -1,9 +1,16 @@
 <?php
 if(!empty($_GET["action"])&&$_GET["action"]=="edited"){
-    Users::editUser();
+    if(UserControl::editUser($_SESSION["idUserEdit"],$_POST["email"],$_POST["password"],$_POST["role"])){
+        $_SESSION["userEdited"] = 'true';
+    }else{
+        $_SESSION["userEdited"] = 'false';
+    }
+    unset($_SESSION["idUserEdit"]);
+    header("Location:index.php?pages=usersManagement");//prokliknuti na upravu uzivatele
 }
-if(!empty($_SESSION["idUser"])){
-    Users::printEditUser();
+if(!empty($_GET["idUser"])){
+    UserControl::printEditUser($_GET["idUser"]);
+    $_SESSION["idUserEdit"] = $_GET["idUser"];
 }
 
 ?>

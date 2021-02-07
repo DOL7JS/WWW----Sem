@@ -3,27 +3,7 @@
 
 class Section
 {
-    static function translate($name)//preklad ceskych kategorii do anglickych
-    {
-        $list = explode("/", $name);
-        $name = explode(".", end($list));
-        switch ($name[0]) {
-            case "Trenýrky":
-                return "shorts";
-            case "Trika":
-                return "shirts";
-            case "Tašky":
-                return "bags";
-            case "Míče":
-                return "balls";
-            case "Kopačky":
-                return "shoes";
-            case "Chrániče":
-                return "protectors";
-            case "Brankář":
-                return "goalkeeper";
-        }
-    }
+
     static function getCategory($category){
         switch ($category) {
             case "shorts":
@@ -45,11 +25,6 @@ class Section
 
     static function printSection($gender)//vypis kategorii
     {
-        $dir = "./imgs/imgs_section/";
-        $files2 = scandir($dir, 1);
-        for ($i = 0; $i < count($files2) - 2; $i++) {
-            $filenames[$i] = $dir . $files2[$i];
-        }
         switch ($gender){
             case "m": echo '<h1 class="textCenter">Muži</h1>';break;
             case "f": echo '<h1 class="textCenter">Ženy</h1>';break;
@@ -57,20 +32,19 @@ class Section
         }
 
         echo '<div class="allGoods">';
-        for ($i = 0; $i < count($filenames); $i++) {
-            $a = Section::translate($filenames[$i]);
-            echo "<a href='index.php?pages=goods&goods=$a&gender=$gender'>";
+        $categories = GoodsDB::selectCategories();
+        foreach($categories as $category){
+            echo '<a href="index.php?pages=goods&goods='.$category["name"].'&gender='.$gender.'">';
             echo '
-            <div id="goodsSection">
-            <img id="imgSection" src=' . $filenames[$i] . '>';
-            $list = explode("/", $filenames[$i]);
-            $name = explode(".", end($list));
-            echo '<p id="nameSection">';
-            echo $name[0];
+            <div class="goodsSection">
+            <img class="imgSection" src=' . $category["image"] . '>';
+            echo '<p class="nameSection">';
+            echo $category["czech_name"];
             echo '</p>
             </div>
             </a>';
         }
+
         echo '</div>';
     }
 

@@ -3,7 +3,7 @@
 <?php
 $conn = connection::getConnection();
 if(!empty($_POST["email"])&&!empty($_POST["heslo"])) {
-    Users::login();
+    UserControl::login();
 }
 ?>
     <form action="index.php?pages=logIn" method="post">

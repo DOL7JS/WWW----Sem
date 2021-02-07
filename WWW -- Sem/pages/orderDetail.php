@@ -1,5 +1,6 @@
 <?php
 if(!empty($_POST["detailOrder"])||!empty($_GET["detailOrder"])){
-    Orders::printOrderDetail();
+    $idOrder = empty($_POST["detailOrder"])?$_GET["detailOrder"]:$_POST["detailOrder"];
+    OrderControl::printOrderDetail($idOrder);
 }
 ?>

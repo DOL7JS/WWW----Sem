@@ -1,15 +1,11 @@
 <?php
-if(!empty($_POST["Potvrdit"])){
-    ValidityChecker::checkValidityPaymentGateway();
-}
-if(!empty($_SESSION["delivery_info"]["deliveryMethod"])&&!empty($_SESSION["delivery_info"]["paymentMethod"])&&
-    !empty($_SESSION["delivery_info"]["first_name"])&&!empty($_SESSION["delivery_info"]["last_name"])&&
-    !empty($_SESSION["delivery_info"]["phone_number"])&&!empty($_SESSION["delivery_info"]["city"])&&
-    !empty($_SESSION["delivery_info"]["street"])&&!empty($_SESSION["delivery_info"]["home_number"])&&!empty($_SESSION["delivery_info"]["zip_code"]) &&
-    !empty($_POST["numberOfCard"])&&!empty($_POST["validityMonth"])&&!empty($_POST["validityYear"])&&!empty($_POST["CVC"])) {//kontrola zda je vse vyplnene
-        Orders::addOrder();//pridani/potvrzeni objednavky
+
+if(!empty($_POST["Potvrdit"])&&ValidityChecker::checkValidityPaymentGateway()){//kontrola zda je vse vyplnene
+        OrderControl::addOrder($_SESSION["delivery_info"]["first_name"],$_SESSION["delivery_info"]["last_name"],
+            $_SESSION["delivery_info"]["phone_number"],$_SESSION["delivery_info"]["city"],
+            $_SESSION["delivery_info"]["street"],$_SESSION["delivery_info"]["home_number"],$_SESSION["delivery_info"]["zip_code"]);
         unset($_SESSION["delivery_info"]);
-        Orders::printOrderConfirm();
+        OrderControl::printOrderConfirm();
 }
 ?>
 <form action="" method="post">

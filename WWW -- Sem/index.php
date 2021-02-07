@@ -9,12 +9,20 @@ if(empty($_GET["pages"])){
 
 require_once "./classes/Connection.php";
 require_once "./classes/Section.php";
-require_once "./classes/Goods.php";
-require_once "./classes/Cart.php";
-require_once "./classes/Users.php";
-require_once "./classes/Orders.php";
-require_once "./classes/Sales.php";
+require_once "./classes/CartControl.php";
 require_once "./classes/ValidityChecker.php";
+require_once "./classes/GoodsControl.php";
+require_once "./classes/GoodsDB.php";
+require_once "./classes/UserControl.php";
+require_once "./classes/UserDB.php";
+require_once "./classes/OrderControl.php";
+require_once "./classes/OrderDB.php";
+require_once "./classes/AdminControl.php";
+require_once "./classes/Colors.php";
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,6 +35,9 @@ require_once "./classes/ValidityChecker.php";
 <body>
 
 <?php
+print_r($_SESSION);
+echo '<br>';
+print_r($_POST);
 
 include "menu.php";
 ?>

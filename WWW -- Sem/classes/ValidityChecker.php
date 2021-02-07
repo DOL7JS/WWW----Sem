@@ -5,8 +5,12 @@ class ValidityChecker
 {
     //metody kontroluji zda jsou vyplnene potrebne fieldy
     //pokud alespon jeden je nevyplnen, na konci vyskoci okno o teto informaci
-    static function checkValidityGoods(){
+    public static function checkValidityGoods(){
         $errorMsg = '';
+        $sizes = array("XS", "S", "L", "XL","XXL","3XL");
+        if(in_array($_POST["size"],$sizes)||is_numeric($_POST["size"])){
+            $errorMsg .= 'Zadal jste neplatnou velikost\n';
+        }
         if(empty($_POST["name"])){
             $errorMsg .= 'Vyplnte název\n';
         }
@@ -26,10 +30,26 @@ class ValidityChecker
             $errorMsg .= 'Vyberte soubor\n';
         }
         if(!empty($errorMsg)){
-            Users::printInformation($errorMsg);
+            UserControl::printInformation($errorMsg);
+            return false;
         }
+        return true;
     }
-    static function checkValiditySale(){
+    public static function checkAddAttribute(){
+        $errorMsg = '';
+        if(empty($_POST["attributeSizeAdd"])){
+            $errorMsg .= 'Vyplnte velikost\n';
+        }
+        if(empty($_FILES["Filename"]["name"])){
+            $errorMsg .= 'Vyberte soubor\n';
+        }
+        if(!empty($errorMsg)){
+            UserControl::printInformation($errorMsg);
+            return false;
+        }
+        return true;
+    }
+    public static function checkValiditySale(){
         $errorMsg = '';
         if(empty($_POST["sale"])){
             $errorMsg .= 'Vyplnte velikost slevy\n';
@@ -38,10 +58,12 @@ class ValidityChecker
             $errorMsg .= 'Zadal jste neplatne hodnoty pro slevu\n';
         }
         if(!empty($errorMsg)){
-            Users::printInformation($errorMsg);
+            UserControl::printInformation($errorMsg);
+            return false;
         }
+        return true;
     }
-    static function checkValidityPayment(){
+    public static function checkValidityPayment(){
         $errorMsg = '';
         if(empty($_POST["deliveryMethod"])){
             $errorMsg .= 'Vyplnte způsob doručení\n';
@@ -71,10 +93,12 @@ class ValidityChecker
             $errorMsg .= 'Vyplnte PSČ\n';
         }
         if(!empty($errorMsg)){
-            Users::printInformation($errorMsg);
+            UserControl::printInformation($errorMsg);
+            return false;
         }
+        return true;
     }
-    static function checkValidityUsers(){
+    public static function checkValidityUsers(){
         $errorMsg = '';
         if(empty($_POST["email"])){
             $errorMsg .= 'Vyplnte email\n';
@@ -83,10 +107,12 @@ class ValidityChecker
             $errorMsg .= 'Vyplnte heslo\n';
         }
         if(!empty($errorMsg)){
-            Users::printInformation($errorMsg);
+            UserControl::printInformation($errorMsg);
+            return false;
         }
+        return true;
     }
-    static function  checkValidityAddresses(){
+    public static function  checkValidityAddresses(){
         $errorMsg = '';
         if(empty($_POST["first_name"])){
             $errorMsg .= 'Vyplnte jméno\n';
@@ -111,13 +137,13 @@ class ValidityChecker
         }else if(!is_numeric(str_replace(" ", "", $_POST["zip_code"]))){
             $errorMsg .= 'PSČ není číslo\n';
         }
-
         if(!empty($errorMsg)){
-            Users::printInformation($errorMsg);
+            UserControl::printInformation($errorMsg);
+            return false;
         }
-
+        return true;
     }
-    static function checkValidityPaymentGateway(){
+    public static function checkValidityPaymentGateway(){
         $errorMsg = '';
         if(empty($_POST["numberOfCard"])){
             $errorMsg .= 'Vyplnte číslo karty\n';
@@ -132,7 +158,44 @@ class ValidityChecker
             $errorMsg .= 'Vyplnte CVC\n';
         }
         if(!empty($errorMsg)){
-            Users::printInformation($errorMsg);
+            UserControl::printInformation($errorMsg);
+            return false;
         }
+        return true;
+    }
+
+    public static function checkUpdateGoods()
+    {
+        $errorMsg = '';
+        if(empty($_POST["name"])){
+            $errorMsg .= 'Vyplnte název zboží\n';
+        }
+        if(empty($_POST["price"])){
+            $errorMsg .= 'Vyplnte cenu\n';
+        }
+        if(!empty($errorMsg)){
+            UserControl::printInformation($errorMsg);
+            return false;
+        }
+        return true;
+    }
+
+    public static function checkAddCategory()
+    {
+        $errorMsg = '';
+        if(empty($_POST["categoryNameCzech"])){
+            $errorMsg .= 'Vyplnte český název kategorie\n';
+        }
+        if(empty($_POST["categoryNameEnglish"])){
+            $errorMsg .= 'Vyplnte anglický název kategorie\n';
+        }
+        if(empty($_FILES['Filename']['name'])){
+            $errorMsg .= 'Vyberte soubor\n';
+        }
+        if(!empty($errorMsg)){
+            UserControl::printInformation($errorMsg);
+            return false;
+        }
+        return true;
     }
 }
