@@ -80,6 +80,9 @@ class ValidityChecker
         if(empty($_POST["phone_number"])){
             $errorMsg .= 'Vyplnte telefonní číslo\n';
         }
+        if(strlen(str_replace(" ","",$_POST["phone_number"]))>9){
+            $errorMsg .= 'Moc znaku v telefonním cisle\n';
+        }
         if(empty($_POST["city"])){
             $errorMsg .= 'Vyplnte město\n';
         }
@@ -91,6 +94,11 @@ class ValidityChecker
         }
         if(empty($_POST["zip_code"])){
             $errorMsg .= 'Vyplnte PSČ\n';
+        }else if(!is_numeric(str_replace(" ", "", $_POST["zip_code"]))){
+            $errorMsg .= 'PSČ není číslo\n';
+        }
+        if(strlen(str_replace(" ","",$_POST["zip_code"]))>5){
+            $errorMsg .= 'Moc znaku v PSČ\n';
         }
         if(!empty($errorMsg)){
             UserControl::printInformation($errorMsg);
@@ -137,6 +145,13 @@ class ValidityChecker
         }else if(!is_numeric(str_replace(" ", "", $_POST["zip_code"]))){
             $errorMsg .= 'PSČ není číslo\n';
         }
+        if(strlen(str_replace(" ","",$_POST["phone_number"]))>9){
+            $errorMsg .= 'Moc znaku v telefonním cisle\n';
+        }
+        if(strlen(str_replace(" ","",$_POST["zip_code"]))>5){
+            $errorMsg .= 'Moc znaku v PSČ\n';
+        }
+
         if(!empty($errorMsg)){
             UserControl::printInformation($errorMsg);
             return false;
@@ -156,6 +171,18 @@ class ValidityChecker
         }
         if(empty($_POST["CVC"])){
             $errorMsg .= 'Vyplnte CVC\n';
+        }
+        if(strlen(str_replace(" ","",$_POST["numberOfCard"]))!=16){
+            $errorMsg .= 'Spatny pocet znaku v cisle karty\n';
+        }
+        if(strlen(str_replace(" ","",$_POST["validityMonth"]))!=2){
+            $errorMsg .= 'Spatny pocet znaku v mesici\n';
+        }
+        if(strlen(str_replace(" ","",$_POST["validityYear"]))!=2){
+            $errorMsg .= 'Spatny pocet znaku v roce\n';
+        }
+        if(strlen(str_replace(" ","",$_POST["CVC"]))!=3){
+            $errorMsg .= 'Spatny pocet znaku v CVC\n';
         }
         if(!empty($errorMsg)){
             UserControl::printInformation($errorMsg);

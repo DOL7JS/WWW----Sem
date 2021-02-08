@@ -120,7 +120,10 @@ class AdminControl
             }
         }else{
             $category = GoodsDB::selectCategoryByName($englishNameOfCategory);
-            GoodsDB::updateCategoryStatusAndImage($category["id_category"],0,$image);
+            $fileMove = move_uploaded_file($_FILES["Filename"]["tmp_name"],$image);//pridani obrazku do slozky 'imgs/imgs_section'
+            if($fileMove) {
+                GoodsDB::updateCategoryStatusAndImage($category["id_category"],0,$image);
+            }
         }
     }
     public static function printAllCategoriesAsAdmin()

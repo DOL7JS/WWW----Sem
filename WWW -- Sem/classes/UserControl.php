@@ -193,7 +193,7 @@ class UserControl
             <label>Příjmení: </label><input type="text" name="last_name"  ';if(!empty($row)){echo 'value="'.$row["last_name"].'"';}echo '>
             </div>
             <div>
-            <label>Telefonní číslo: </label><input type="text" name="phone_number"  ';if(!empty($row)){echo 'value="'.$row["phone_number"].'"';}echo '>
+            <label>Telefonní číslo: </label><input type="number" name="phone_number"  ';if(!empty($row)){echo 'value="'.$row["phone_number"].'"';}echo '>
             </div>
             <div>
             <label>Město: </label><input type="text" name="city"  ';if(!empty($row)){echo 'value="'.$row["city"].'"';}echo '>
