@@ -24,7 +24,7 @@ if(!empty($_POST["addUserButton"])&&ValidityChecker::checkValidityUsers()){
     }
 }
 echo '<div class=list>';
-    UserControl::printFormAddUser();
-    UserControl::printAllUsersAsAdmin();
+    AdminControl::printFormAddUser();
+    AdminControl::printAllUsersAsAdmin();
 echo '</div>';
 ?>

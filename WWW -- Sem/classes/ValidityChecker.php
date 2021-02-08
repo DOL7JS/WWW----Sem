@@ -7,8 +7,8 @@ class ValidityChecker
     //pokud alespon jeden je nevyplnen, na konci vyskoci okno o teto informaci
     public static function checkValidityGoods(){
         $errorMsg = '';
-        $sizes = array("XS", "S", "L", "XL","XXL","3XL");
-        if(in_array($_POST["size"],$sizes)||is_numeric($_POST["size"])){
+        $sizes = array("XS", "S", "M", "L", "XL","XXL","3XL");
+        if(!in_array($_POST["size"],$sizes)||is_numeric($_POST["size"])){
             $errorMsg .= 'Zadal jste neplatnou velikost\n';
         }
         if(empty($_POST["name"])){
@@ -112,7 +112,7 @@ class ValidityChecker
         }
         return true;
     }
-    public static function  checkValidityAddresses(){
+    public static function  checkValidityAddAddresses(){
         $errorMsg = '';
         if(empty($_POST["first_name"])){
             $errorMsg .= 'Vyplnte jméno\n';
@@ -198,4 +198,5 @@ class ValidityChecker
         }
         return true;
     }
+
 }

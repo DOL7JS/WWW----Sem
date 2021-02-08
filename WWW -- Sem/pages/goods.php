@@ -17,8 +17,8 @@ if(!empty($_GET["action"])&&$_GET["action"]=="add"&&!empty($_GET["idGoods"])&&!e
 
 if(!empty($_GET["goods"])&&!empty($_GET["gender"])){
     $_SESSION["actualURL"] = $_SERVER['REQUEST_URI'];
-    GoodsControl::setFilter();
-    GoodsControl::setGoodsByCategoryAndGender($_GET["goods"],$_GET["gender"]);
+    GoodsControl::printFilter();
+    GoodsControl::printGoodsByCategoryAndGender($_GET["goods"],$_GET["gender"]);
 }
 
 

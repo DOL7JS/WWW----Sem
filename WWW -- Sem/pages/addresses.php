@@ -1,11 +1,11 @@
 <?php
 
-if(!empty($_POST["addAddress"])&&ValidityChecker::checkValidityAddresses()){
-    UserControl::addDeliveryInfo();
+if(!empty($_POST["addAddress"])&&ValidityChecker::checkValidityAddAddresses()){
+    UserControl::addDeliveryInfo($_POST["first_name"],$_POST["last_name"],$_POST["phone_number"],$_POST["city"],$_POST["street"],
+        $_POST["home_number"],$_POST["zip_code"],$_SESSION["idUser"]);
 }
-if(!empty($_GET["first_name"])&&!empty($_GET["last_name"])&&!empty($_GET["phone_number"])
-    &&!empty($_GET["city"])&&!empty($_GET["street"])&&!empty($_GET["home_number"])&&!empty($_GET["zip_code"])){
-    UserControl::deleteDeliveryInfo();
+if(!empty($_GET["action"])&&$_GET["action"]=="deleteAddress"){
+    UserControl::deleteDeliveryInfo($_GET["first_name"],$_GET["last_name"],$_GET["phone_number"],$_GET["city"],$_GET["street"],$_GET["home_number"],$_GET["zip_code"],$_SESSION["idUser"]);
     header("Location:index.php?pages=addresses");
 }
 echo '<div class=list>';

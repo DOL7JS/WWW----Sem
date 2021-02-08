@@ -3,13 +3,13 @@
 
 class UserDB
 {
-    public static function getAllUsers(){
+    public static function selectAllUsers(){
         $conn = connection::getConnection();
         $result = $conn->prepare("SELECT * FROM db_dev.user");
         $result->execute();
         return $result->fetchAll();
     }
-    private static function getIdAddressesOfUser($idUser){
+    private static function selectIdAddressesOfUser($idUser){
         $conn = connection::getConnection();
         $result = $conn->prepare("SELECT DISTINCT * FROM db_dev.user_delivery_info 
         JOIN delivery_info di on di.id_delivery_info = user_delivery_info.delivery_info_id_delivery_info 
@@ -38,13 +38,13 @@ class UserDB
         $result->execute();
         return $result->fetch();
     }
-    public static function getAddressesOfUser($idUser){
+    public static function selectAddressesOfUser($idUser){
         $conn = connection::getConnection();
-        $idsOfAddresses = self::getIdAddressesOfUser($idUser);
+        $idsOfAddresses = self::selectIdAddressesOfUser($idUser);
         $ar = array();
         foreach($idsOfAddresses as $id){
-            $result = $conn->prepare("SELECT * FROM db_dev.delivery_info WHERE id_delivery_info IN ( :array ) AND saved_address = 1;");
-            $result->bindParam(":array",$id["delivery_info_id_delivery_info"]);
+            $result = $conn->prepare("SELECT * FROM db_dev.delivery_info WHERE id_delivery_info = :idDeliveryInfo AND saved_address = 1;");
+            $result->bindParam(":idDeliveryInfo",$id["delivery_info_id_delivery_info"]);
             $result->execute();
             $ar[] = $result->fetch();
         }
@@ -194,6 +194,24 @@ class UserDB
         $result->bindParam(":role",$role);
         $result->bindParam(":idUser",$idUser);
         $result->execute();
+    }
+
+    public static function deleteUserDeliveryInfo($idUser)
+    {
+        $conn = connection::getConnection();
+        $result = $conn->prepare("DELETE FROM db_dev.user_delivery_info WHERE user_id_user= :idUser");
+        $result->bindParam(":idUser",$idUser);
+        $result->execute();
+    }
+
+    public static function deleteDeliveryInfo($addreses)
+    {
+        $conn = connection::getConnection();
+        foreach ($addreses as $id){
+            $result = $conn->prepare("DELETE FROM db_dev.delivery_info WHERE id_delivery_info= :idDeliveryInfo");
+            $result->bindParam(":idDeliveryInfo",$id);
+            $result->execute();
+        }
     }
 
 

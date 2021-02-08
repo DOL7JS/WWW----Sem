@@ -35,9 +35,9 @@ require_once "./classes/Colors.php";
 <body>
 
 <?php
-print_r($_SESSION);
-echo '<br>';
-print_r($_POST);
+//print_r($_SESSION);
+//echo '<br>';
+//print_r($_POST);
 
 include "menu.php";
 ?>

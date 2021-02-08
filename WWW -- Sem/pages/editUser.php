@@ -9,7 +9,7 @@ if(!empty($_GET["action"])&&$_GET["action"]=="edited"){
     header("Location:index.php?pages=usersManagement");//prokliknuti na upravu uzivatele
 }
 if(!empty($_GET["idUser"])){
-    UserControl::printEditUser($_GET["idUser"]);
+    AdminControl::printEditUserAsAdmin($_GET["idUser"]);
     $_SESSION["idUserEdit"] = $_GET["idUser"];
 }
 

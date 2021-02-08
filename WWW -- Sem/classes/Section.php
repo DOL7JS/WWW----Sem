@@ -3,26 +3,6 @@
 
 class Section
 {
-
-    static function getCategory($category){
-        switch ($category) {
-            case "shorts":
-                return "Trenýrky";
-            case "shirts":
-                return "Trika";
-            case "bags":
-                return "Tašky";
-            case "balls":
-                return "Míče";
-            case "shoes":
-                return "Kopačky";
-            case "protectors":
-                return "Chrániče";
-            case "goalkeeper":
-                return "Brankář";
-        }
-    }
-
     static function printSection($gender)//vypis kategorii
     {
         switch ($gender){

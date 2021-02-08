@@ -1,6 +1,6 @@
 <?php
 if(!empty($_GET["action"])&&$_GET["action"]=="addAttribute"&&ValidityChecker::checkAddAttribute()){
-    $sizes = array("XS", "S", "L", "XL","XXL","3XL");
+    $sizes = array("XS", "S","M", "L", "XL","XXL","3XL");
     if(in_array($_POST["attributeSizeAdd"],$sizes)||is_numeric($_POST["attributeSizeAdd"])){
         if(AdminControl::addAttribute($_GET["goodsID"],$_POST["attributeSizeAdd"],$_POST["attributeColorAdd"],"imgs/imgs_goods/".$_FILES["Filename"]["name"])) {
             UserControl::printInformation('Atribut přidán');
@@ -9,7 +9,7 @@ if(!empty($_GET["action"])&&$_GET["action"]=="addAttribute"&&ValidityChecker::ch
         UserControl::printInformation('Zadal jste neplatnou velikost');
     }
 }
-if(!empty($_GET["action"])&&$_GET["action"]=="deleteAttribute"&&!empty($_POST["deleteAttributeButton"])){//TODO VALIDITYCHECKER
+if(!empty($_GET["action"])&&$_GET["action"]=="deleteAttribute"&&!empty($_POST["deleteAttributeButton"])){
     AdminControl::deleteAttribute($_GET["goodsID"],$_POST["attributeSizeDelete"],$_POST["attributeColorDelete"]);
     $checkGoods = GoodsDB::getGoodsWithAvailableAttributeById($_GET["goodsID"]);
     if($checkGoods==null){

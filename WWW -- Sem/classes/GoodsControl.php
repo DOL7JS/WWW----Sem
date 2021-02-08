@@ -4,7 +4,7 @@
 class GoodsControl
 {
     //-------------FILTER-------------------
-    public static function setFilter(){
+    public static function printFilter(){
         echo '<form method="post" class="filter">';
         self::setOrderByPriceFilter();
         self::setOrderBySizeFilter();
@@ -99,12 +99,11 @@ class GoodsControl
     {
         $sizes = GoodsDB::selectAllSizesOfGoodsInSale();
         echo '<label class="filterCategory">Velikost: </label><select name="filterBySize" onchange="this.form.submit()">';
-        echo '<option disabled selected>Typ . . .</option>';
+        echo '<option disabled selected>Velikost . . .</option>';
         self::resetFilter("filterBySize");
         self::setOptionInSelectCategory("filterBySize",$sizes);
         echo '</select>';
     }
-
 
     public static function setOrderByPriceFilter(){
         $orderBy = array(array("ascending","Vzestupně"),array("descending","Sestupně"));
@@ -157,7 +156,7 @@ class GoodsControl
     public static function setOrderByAvailableInGoodsManagement()
     {
         $available = array(array("available","K dispozici"),array("unavailable","Není k dispozici"));
-        if(empty($_POST["orderByAvailable"])){
+        if(empty($_POST["orderByAvailable"])){//určení stavu pokud není nic v POSTu
             $_POST["orderByAvailable"] = "available";
         }
         echo '<label class="filterCategory w200" >K dispozici: </label>
@@ -166,7 +165,7 @@ class GoodsControl
         echo '</select>';
     }
 
-    public static function setGoodsByCategoryAndGender($category,$gender){
+    public static function printGoodsByCategoryAndGender($category, $gender){
         $filterSize = empty($_POST["filterBySize"])?null:$_POST["filterBySize"];
         $filterColor = empty($_POST["filterByColor"])?null:$_POST["filterByColor"];
         $filterPrice = empty($_POST["orderByPrice"])?null:$_POST["orderByPrice"];
@@ -187,7 +186,14 @@ class GoodsControl
     }
     public static function printGoodInSale()
     {
-        $goodsInSale = GoodsDB::selectGoodsInSale();
+        $category = empty($_POST["filterByCategory"])?null:$_POST["filterByCategory"];
+        $gender = empty($_POST["filterByGender"])?null:$_POST["filterByGender"];
+        $size = empty($_POST["filterBySize"])?null:$_POST["filterBySize"];
+        $color = empty($_POST["filterByColor"])?null:$_POST["filterByColor"];
+        $price = empty($_POST["orderByPrice"])?null:$_POST["orderByPrice"];
+        $category = GoodsDB::selectCategoryByNameInCzech($category);
+        $category = $category==null?null:$category["id_category"];
+        $goodsInSale = GoodsDB::selectGoodsInSale($category,$gender,$size,$color,$price);
         echo '<div class="allGoods">';
         foreach ($goodsInSale as $goods){
             $goodsAttr = GoodsDB::getGoodsWithAvailableAttributeById($goods["id_goods"]);
@@ -248,25 +254,7 @@ class GoodsControl
         return empty($_SESSION["role"])||UserControl::isUserCustomer();//pokud je nezaregistrovany uzivatel, muze dat do kosik
     }
 
-    public static function printAllCategories()
-    {
-        $categories = GoodsDB::selectCategories();
-        foreach ($categories as $category){
-            echo '<div class=listRow>';
-            echo '<div class=detailsInRow>';
-            echo "Český název: ".$category["czech_name"];
-            echo '<br>';
-            echo "Anglický název: ".$category["name"];
-            echo '</div>';
-            echo '<img src="'.$category["image"].'" class="w100h100">';
-            echo '<div id="btnsInCategoryManagement" class="btnsInList">';
-            echo '<a href="index.php?pages=categoryManagement&action=deleteCategory&goodsID=' . $category["id_category"] . '"><img class="w50h50" src="./imgs/icons/trash.png"></a>';
-            echo '<br>';
 
-            echo '</div>';
-            echo '</div>';
-        }
-    }
     public static function updateGoods($idGoods, $name, $price)
     {
         GoodsDB::updateGoods($idGoods, $name, $price);

@@ -92,7 +92,7 @@ class GoodsDB
         $result->execute();
         return $result->fetchAll();
     }
-    public static function getGoodsWithAttributeById($id){
+    public static function selectGoodsWithAttributeById($id){
         $conn = connection::getConnection();
         $result = $conn->prepare("SELECT * FROM db_dev.goods 
                                                 JOIN db_dev.attribute a on goods.id_goods = a.goods_id_goods WHERE id_goods= :idGoods");//zjisteni informaci o zbozi na zaklade id
@@ -154,11 +154,45 @@ class GoodsDB
         return $result->fetchAll();
     }
 
-    public static function selectGoodsInSale()
+    public static function selectGoodsInSale($category,$gender,$size,$color,$price)
     {
         $conn = connection::getConnection();
-        $result = $conn->prepare("SELECT DISTINCT id_goods,name,price,sale FROM db_dev.goods 
-                                JOIN attribute a on goods.id_goods = a.goods_id_goods WHERE sale!=0 AND available=1");
+        $sql = "SELECT DISTINCT id_goods,name,price,sale FROM db_dev.goods 
+                                JOIN attribute a on goods.id_goods = a.goods_id_goods WHERE sale!=0 AND available=1";
+
+        if($category!=null){
+            $sql .= " AND category_id_category = :idCategory ";
+        }
+        if($gender!=null){
+            $sql .= " AND gender = :gender ";
+        }
+        if($size!=null){
+            $sql .= " AND size = :size ";
+        }
+        if($color!=null){
+            $sql .= " AND color = :color ";
+        }
+        if($price!=null){
+            $sql .= " AND price = :price ";
+        }
+
+        $result = $conn->prepare($sql);
+        if($category!=null) {
+            $result->bindParam(":idCategory",$category);
+        }
+        if($gender!=null) {
+            $result->bindParam(":gender",$gender);
+        }
+        if($size!=null) {
+            $result->bindParam(":size",$size);
+        }
+        if($color!=null) {
+            $result->bindParam(":color",$color);
+        }
+        if($price!=null) {
+            $result->bindParam(":price",$price);
+        }
+
         $result->execute();
         return $result->fetchAll();
     }
@@ -172,10 +206,10 @@ class GoodsDB
 
     }
 
-    public static function selectAllGoods()
+    public static function selectAllAvailableGoods()
     {
         $conn = connection::getConnection();
-        $result = $conn->prepare("SELECT * FROM db_dev.goods");
+        $result = $conn->prepare("SELECT * FROM db_dev.goods WHERE deleted = 0");
         $result->execute();
         return $result->fetchAll();
 

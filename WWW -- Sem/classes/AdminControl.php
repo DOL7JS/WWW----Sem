@@ -42,7 +42,7 @@ class AdminControl
     //----------------------SALES------------------------
     public static function printFormAddSale()
     {
-        $goods = GoodsDB::selectAllGoods();
+        $goods = GoodsDB::selectAllAvailableGoods();
         echo '<div class=listRow>';
         echo '<div class=detailsInRow>';
         echo '<form method="post" id="addSaleForm">';
@@ -60,7 +60,7 @@ class AdminControl
 
     public static function printSalesAsAdmin()
     {
-        $goodsInSale = GoodsDB::selectGoodsInSale();
+        $goodsInSale = GoodsDB::selectGoodsInSale(null,null,null,null,null);
         foreach($goodsInSale as $goods){//prochazeni slev a jejich vypis
             echo '<div class=listRow>';
             echo '<div class="detailsInRow detailsInSale">';
@@ -72,7 +72,6 @@ class AdminControl
             echo '<br>';
             echo "Po slevě: ".$goods["price"]*(1-$goods["sale"]/100)." Kč";
             echo '</div>';
-
             echo '<div id="btnsInSaleManagement" class="btnsInList">';
             echo '<a href="index.php?pages=saleManagement&action=deleteSale&goodsId=' . $goods["id_goods"] . '"><img class="w50h50 iconDeleteSale" src="./imgs/icons/trash.png"></a>';
             echo '<br>';
@@ -114,9 +113,8 @@ class AdminControl
     {
         $image = "imgs/imgs_section/".$file;
         $category = GoodsDB::checkUniqueNameCategory($czechNameOfCategory, $englishNameOfCategory);
-        print_r($category);
         if($category==null){
-            $fileMove = move_uploaded_file($_FILES["Filename"]["tmp_name"],$image);//pridani obrazku do slozky 'imgs/imgs_goods'
+            $fileMove = move_uploaded_file($_FILES["Filename"]["tmp_name"],$image);//pridani obrazku do slozky 'imgs/imgs_section'
             if($fileMove){
                 GoodsDB::addCategory($czechNameOfCategory, $englishNameOfCategory, $image,0);
                 return true;
@@ -126,6 +124,25 @@ class AdminControl
             $category = GoodsDB::selectCategoryByName($englishNameOfCategory);
             GoodsDB::updateCategoryStatusAndImage($category["id_category"],0,$image);
             return true;
+        }
+    }
+    public static function printAllCategoriesAsAdmin()
+    {
+        $categories = GoodsDB::selectCategories();
+        foreach ($categories as $category){
+            echo '<div class=listRow>';
+            echo '<div class=detailsInRow>';
+            echo "Český název: ".$category["czech_name"];
+            echo '<br>';
+            echo "Anglický název: ".$category["name"];
+            echo '</div>';
+            echo '<img src="'.$category["image"].'" class="w100h100">';
+            echo '<div id="btnsInCategoryManagement" class="btnsInList">';
+            echo '<a href="index.php?pages=categoryManagement&action=deleteCategory&goodsID=' . $category["id_category"] . '"><img class="w50h50" src="./imgs/icons/trash.png"></a>';
+            echo '<br>';
+
+            echo '</div>';
+            echo '</div>';
         }
     }
 
@@ -224,7 +241,7 @@ class AdminControl
 
     private static function printGoodsInManagementGoods($goods)
     {
-        $attribute = GoodsDB::getGoodsWithAttributeById($goods["id_goods"]);
+        $attribute = GoodsDB::selectGoodsWithAttributeById($goods["id_goods"]);
         $attribute = $attribute[0];
         $category = GoodsDB::selectCategoryByGoodsName($goods["name"]);
         echo '<div class="listRow listRowGoods">';
@@ -279,7 +296,6 @@ class AdminControl
         $colors =Colors::getColors();
         echo '               
         <div class=listRow>
-
         <div class=detailsInRow>
         <form name="frmImage" enctype="multipart/form-data" action="" method="post"  >
                     <label class="w130">Název: </label><input name="name" type="text" class="inputsNextLabel"/>
@@ -327,4 +343,79 @@ class AdminControl
             </div>';
     }
 
+    public static function printFormAddUser()
+    {
+        echo '<div class=listRow>
+                    <div class=detailsInRow >
+                        <form name="addUser" class="dFlex" id="addUserForm" method="post" action="index.php?pages=usersManagement">
+                                    <div>
+                                    <label class="w130" >Email: </label>
+                                    <input class="pRelBottom7"  name="email" type="email" >
+                                          </div>
+                                    <div >
+                                    <label class="w130" >Heslo: </label>
+                                    <input class="pRelBottom7"  name="password" type="password" >
+                                </div>
+                                <div>
+                                <label class="w130" >Role: </label>
+                                <select name="role" class="pRelRight5 pRelBottom7"><option>Zákazník</option><option>Zaměstnanec</option></select>
+                                </div>
+                                <div >  
+                                <input type="submit" value="Přidat" id="addUserButton" name="addUserButton" >
+                                </div>
+                        </form>
+                    </div>
+                </div>';
+    }
+    public static function printAllUsersAsAdmin()
+    {
+        $users = UserDB::selectAllUsers();
+        foreach($users as $user){//prochazeni a vypis vsech uzivatelu
+            echo '<div class=listRow>';
+            echo '<div class="detailsInRow detailsInRowUsers">';
+            echo $user['email'];
+            echo "<br>";
+            echo "Role: ".$user["role"];
+            echo '</div>';
+            echo '<div id="btnsInUsersManagement" class="btnsInList">';
+            if($user["role"]!="Admin"){
+                echo'<a href="index.php?pages=usersManagement&action=deleteUser&idUser='.$user['id_user']. '" ><img class="w50h50 iconsUserManagement" src="./imgs/icons/trash.png" alt="trash.png"></a>';
+            }
+            echo'<a href="index.php?pages=usersManagement&action=editUser&idUser='.$user['id_user']. '" ><img class="w50h50 iconsUserManagement" src="./imgs/icons/edit.png" alt="edit.png"></a>';
+            echo '</div>';
+            echo '</div>';
+        }
+    }
+
+    public static function printEditUserAsAdmin($idUser){//vypis informaci k upravovanemu uzivateli
+        echo '<h1>Úprava účtu</h1>';
+        $user = UserDB::selectUserById($idUser);
+        if($user!=null){
+            echo '<form id="editUserForm" action="index.php?pages=editUser&action=edited" method="post" class="pRelLeft40p accountBox">
+                    <div><label>Email: </label><input type="email" name="email" placeholder="Email . . ."  value="'.$user["email"]. '" ></div>
+                    <div><label>Heslo: </label><input type="password" name="password"  placeholder="Heslo . . ."></div>
+                    <div><label>Role: </label>';
+            if($user["role"]=="Admin"){
+                echo '<select disabled name="role">';
+            }else{
+                echo '<select name="role">';
+            }
+            switch ($user["role"]){
+                case "Zákazník":
+                    echo '<option selected>Zákazník</option>
+                          <option>Zaměstnanec</option>
+                          <option>Admin</option>';break;
+                case "Zaměstnanec":
+                    echo '<option >Zákazník</option>
+                          <option selected>Zaměstnanec</option>
+                          <option>Admin</option>';break;
+                case "Admin":
+                    echo '<option>Zákazník</option>
+                          <option>Zaměstnanec</option>
+                          <option selected>Admin</option>';break;
+            }
+            echo '</select></div>
+               <div><label></label><input type="submit" value="Potvrdit"></div></form>';
+        }
+    }
 }

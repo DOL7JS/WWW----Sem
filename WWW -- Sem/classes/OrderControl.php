@@ -11,20 +11,26 @@ class OrderControl
     }
     public static function addOrder($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code)
     {
-        if(UserDB::checkUserUniqueAddress($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,$_SESSION["idUser"])){
-            if(empty($_SESSION["delivery_info"]["save_delivery_info"])){
+        if(UserDB::checkUserUniqueAddress($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,$_SESSION["idUser"])){//zjisti se jestli je adresa unikatni
+            if(empty($_SESSION["delivery_info"]["save_delivery_info"])){//rozhoduje se, zda se ma adresa ulozit
                 UserDB::insertAddressToDeliveryInfo($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,0);
             }else{
                 UserDB::insertAddressToDeliveryInfo($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,1);
             }
+            //pridani objednavky s posledni vlozenou adresou
             OrderDB::addOrder($_SESSION["idUser"],$_SESSION["delivery_info"]["paymentMethod"],$_SESSION["delivery_info"]["deliveryMethod"],UserDB::selectIdOfLastAddedDeliveryInfo());
 
         }else{
+            //pridani objednavky s adresou, ktera uz existuje
             OrderDB::addOrder($_SESSION["idUser"],$_SESSION["delivery_info"]["paymentMethod"],$_SESSION["delivery_info"]["deliveryMethod"],
                 UserDB::selectIdAddress($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,$_SESSION["idUser"])["id_delivery_info"]);
+            if(!empty($_SESSION["delivery_info"]["save_delivery_info"])){
+                UserDB::updateAddressStatus($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,$_SESSION["idUser"],1);
+            }
         }
         $order = OrderDB::selectLastAddedOrder();
         if(UserDB::checkUserUniqueAddress($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,$_SESSION["idUser"])){//aby se nemnozila duplicita v user_delivery_info
+            //vlozi se pouze pokud uzivatel jeste nema prirazenou tuto adresu
             UserDB::insertIdAddressToUserDeliveryInfo($order["delivery_info_id_delivery_info"],$_SESSION["idUser"]);
         }
         $i =0;

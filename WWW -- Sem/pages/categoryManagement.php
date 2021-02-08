@@ -20,7 +20,7 @@ echo '<form method="post" action="">
     </form>
   <div class=list>';
 AdminControl::printFormAddCategory();
-GoodsControl::printAllCategories();
+AdminControl::printAllCategoriesAsAdmin();
 echo '</div>';
 
 ?>

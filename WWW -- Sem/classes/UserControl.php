@@ -16,9 +16,14 @@ class UserControl
     public static function deleteUser($idUser){//odstraneni uzivatele, jeho adres, objednaneho zbozi, objednavek
         $orders = OrderDB::selectOrdersOfUser($idUser);
         if($orders!=null){
-            GoodsDB::deleteOrderedGoodsByOrder($orders["id_order"]);
+            foreach ($orders as $order){
+                GoodsDB::deleteOrderedGoodsByOrder($order["id_order"]);
+            }
             OrderDB::deleteOrdersByUser($idUser);
         }
+        $addresses = UserDB::selectAddressesOfUser($idUser);
+        UserDB::deleteUserDeliveryInfo($idUser);
+        UserDB::deleteDeliveryInfo($addresses);
         UserDB::deleteUser($idUser);
     }
     public static function editUser($idUser,$email,$password,$role){//uprava uzivatele
@@ -40,7 +45,7 @@ class UserControl
 
     static function login(){//prihlaseni, nastaveni udaju se $_SESSION
         $user = UserDB::checkEmail($_POST["email"]);
-        if(!empty($user)&&password_verify($_POST["heslo"], $user["password"])){
+        if(!empty($user)&&password_verify($_POST["heslo"], $user["password"])){//pokud uzivatel neexistuje a heslo je platne
             $_SESSION["idUser"] = $user["id_user"];
             $_SESSION["loggedIn"] = true;
             $_SESSION["email"] = $user["email"];
@@ -83,16 +88,20 @@ class UserControl
         echo '</div>';
     }
 
-    static function printAllAddressesOfUser(){
-        $addresses = UserDB::getAddressesOfUser($_SESSION["idUser"]);
+    public static function printAllAddressesOfUser(){
+        $addresses = UserDB::selectAddressesOfUser($_SESSION["idUser"]);
         foreach ($addresses as $row){//prochazeni adres a jejich vypis
             echo '<div class="listRow">
                       <div class="detailsInRow detailsInRowAdr">';
-                        echo "Jméno: ".$row["first_name"]."<br>Příjmení: ".$row["last_name"]."<br>Tel.:".$row["phone_number"];
-                        echo "<br>Město: ".$row["city"].", ".$row["zip_code"]."<br>Ulice: ".$row["street"]."<br>Číslo popisné: ".$row["home_number"];
+                        echo "Jméno: ".$row["first_name"]."<br>
+                              Příjmení: ".$row["last_name"]."<br>
+                              Tel.:".$row["phone_number"];
+                        echo "<br>Město: ".$row["city"].", ".$row["zip_code"]."<br>
+                                Ulice: ".$row["street"]."<br>
+                                Číslo popisné: ".$row["home_number"];
                         echo '</div>
                             <div id="btnInAddresses" class="btnsInList">';
-                        echo'<a href="index.php?pages=addresses&first_name='.$row["first_name"].'&last_name='.$row["last_name"].'&phone_number='.$row["phone_number"].'&city='.$row["city"].'&street='.$row["street"].'&home_number='.$row["home_number"].'&zip_code='.$row["zip_code"].'"><img class="w50h50" src="./imgs/icons/trash.png"></a>
+                        echo'<a href="index.php?pages=addresses&action=deleteAddress&first_name='.$row["first_name"].'&last_name='.$row["last_name"].'&phone_number='.$row["phone_number"].'&city='.$row["city"].'&street='.$row["street"].'&home_number='.$row["home_number"].'&zip_code='.$row["zip_code"].'"><img class="w50h50" src="./imgs/icons/trash.png"></a>
                       </div>
                   </div>';
         }
@@ -118,21 +127,18 @@ class UserControl
                     </div>
                     </div>';
     }
-    public static function addDeliveryInfo(){
-        if(UserDB::checkUserUniqueAddress($_POST["first_name"],$_POST["last_name"],$_POST["phone_number"],$_POST["city"],$_POST["street"],
-            $_POST["home_number"],$_POST["zip_code"],$_SESSION["idUser"])){//"JE UNIQUE";
-            UserDB::insertAddressToDeliveryInfo($_POST["first_name"],$_POST["last_name"],$_POST["phone_number"],$_POST["city"],
-                $_POST["street"], $_POST["home_number"],$_POST["zip_code"],1);
+    public static function addDeliveryInfo($first_name,$last_name,$phone_number,$ciry,$street,$home_number,$zip_code,$idUser){
+        if(UserDB::checkUserUniqueAddress($first_name,$last_name,$phone_number,$ciry,$street,$home_number,$zip_code,$idUser)){//"JE UNIQUE";
+            UserDB::insertAddressToDeliveryInfo($first_name,$last_name,$phone_number,$ciry,$street,$home_number,$zip_code,1);
             UserDB::insertIdAddressToUserDeliveryInfo(UserDB::selectIdOfLastAddedDeliveryInfo(),$_SESSION["idUser"]);
-
         }else{//"Neni UNIQUE";
-            UserDB::updateAddressStatus($_POST["first_name"],$_POST["last_name"],$_POST["phone_number"],$_POST["city"],$_POST["street"],
-                $_POST["home_number"],$_POST["zip_code"],$_SESSION["idUser"],1);
+            echo "IM HERE";
+            UserDB::updateAddressStatus($first_name,$last_name,$phone_number,$ciry,$street,$home_number,$zip_code,$idUser,1);
         }
     }
 
-    public static function deleteDeliveryInfo(){//odstraneni dodaci adresy
-        UserDB::updateAddressStatus($_GET["first_name"],$_GET["last_name"],$_GET["phone_number"],$_GET["city"],$_GET["street"],$_GET["home_number"],$_GET["zip_code"],$_SESSION["idUser"],0);
+    public static function deleteDeliveryInfo($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,$idUser){//odstraneni dodaci adresy
+        UserDB::updateAddressStatus($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,$idUser,0);
     }
 
     public static function printPaymentBoxes(){
@@ -219,7 +225,7 @@ class UserControl
                     <label>Vyplnit adresu: </label>
                     <select onchange="this.form.submit()"  name="addressOption">
                         <option disabled selected>Vyberte adresu</option>';
-       $result = UserDB::getAddressesOfUser($_SESSION["idUser"]);
+       $result = UserDB::selectAddressesOfUser($_SESSION["idUser"]);
         foreach ($result as $row) {//prochazeni adres k vyplneni
             if(!empty($_POST["addressOption"])&&$_POST["addressOption"]==$row["id_delivery_info"]){
                 echo '<option selected value=' . $row["id_delivery_info"] . ' >' . $row["city"] . '</option>';
@@ -231,82 +237,8 @@ class UserControl
         </div>';
     }
 
-    public static function printFormAddUser()
-    {
-            echo '<div class=listRow>
-                    <div class=detailsInRow >
-                        <form name="addUser" class="dFlex" id="addUserForm" method="post" action="index.php?pages=usersManagement">
-                                    <div>
-                                    <label class="w130" >Email: </label>
-                                    <input class="pRelBottom7"  name="email" type="email" >
-                                          </div>
-                                    <div >
-                                    <label class="w130" >Heslo: </label>
-                                    <input class="pRelBottom7"  name="password" type="password" >
-                                </div>
-                                <div>
-                                <label class="w130" >Role: </label>
-                                <select name="role" class="pRelRight5 pRelBottom7"><option>Zákazník</option><option>Zaměstnanec</option></select>
-                                </div>
-                                <div >  
-                                <input type="submit" value="Přidat" id="addUserButton" name="addUserButton" >
-                                </div>
-                        </form>
-                    </div>
-                </div>';
-    }
 
-    public static function printAllUsersAsAdmin()
-    {
-        $users = UserDB::getAllUsers();
-        foreach($users as $user){//prochazeni a vypis vsech uzivatelu
-            echo '<div class=listRow>';
-            echo '<div class="detailsInRow detailsInRowUsers">';
-            echo $user['email'];
-            echo "<br>";
-            echo "Role: ".$user["role"];
-            echo '</div>';
-            echo '<div id="btnsInUsersManagement" class="btnsInList">';
-            if($user["role"]!="Admin"){
-                echo'<a href="index.php?pages=usersManagement&action=deleteUser&idUser='.$user['id_user']. '" ><img class="w50h50 iconsUserManagement" src="./imgs/icons/trash.png" alt="trash.png"></a>';
-            }
-            echo'<a href="index.php?pages=usersManagement&action=editUser&idUser='.$user['id_user']. '" ><img class="w50h50 iconsUserManagement" src="./imgs/icons/edit.png" alt="edit.png"></a>';//TODO ikona upravy
-            echo '</div>';
-            echo '</div>';
-        }
-    }
 
-    static function printEditUser($idUser){//vypis informaci k upravovanemu uzivateli
-        echo '<h1>Úprava účtu</h1>';
-        $user = UserDB::selectUserById($idUser);
-        if($user!=null){
-            echo '<form id="editUserForm" action="index.php?pages=editUser&action=edited" method="post" class="pRelLeft40p accountBox">
-                    <div><label>Email: </label><input type="email" name="email" placeholder="Email . . ."  value="'.$user["email"]. '" ></div>
-                    <div><label>Heslo: </label><input type="password" name="password"  placeholder="Heslo . . ."></div>
-                    <div><label>Role: </label>';
-            if($user["role"]=="Admin"){
-                echo '<select disabled name="role">';
-            }else{
-                echo '<select name="role">';
-            }
-            switch ($user["role"]){
-                case "Zákazník":
-                    echo '<option selected>Zákazník</option>
-                          <option>Zaměstnanec</option>
-                          <option>Admin</option>';break;
-                case "Zaměstnanec":
-                    echo '<option >Zákazník</option>
-                          <option selected>Zaměstnanec</option>
-                          <option>Admin</option>';break;
-                case "Admin":
-                    echo '<option>Zákazník</option>
-                          <option>Zaměstnanec</option>
-                          <option selected>Admin</option>';break;
-            }
-            echo '</select></div>
-               <div><label></label><input type="submit" value="Potvrdit"></div></form>';
-        }
-    }
     static function printInformation($textInfo){//vyskakovaci okno
         echo "<script type='text/javascript'>alert('$textInfo');</script>";
     }
