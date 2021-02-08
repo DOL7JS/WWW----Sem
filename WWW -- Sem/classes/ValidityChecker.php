@@ -8,7 +8,7 @@ class ValidityChecker
     public static function checkValidityGoods(){
         $errorMsg = '';
         $sizes = array("XS", "S", "M", "L", "XL","XXL","3XL");
-        if(!in_array($_POST["size"],$sizes)||is_numeric($_POST["size"])){
+        if(!in_array($_POST["size"],$sizes)&&!is_numeric($_POST["size"])){
             $errorMsg .= 'Zadal jste neplatnou velikost\n';
         }
         if(empty($_POST["name"])){

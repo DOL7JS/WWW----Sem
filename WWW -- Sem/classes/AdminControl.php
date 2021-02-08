@@ -117,13 +117,10 @@ class AdminControl
             $fileMove = move_uploaded_file($_FILES["Filename"]["tmp_name"],$image);//pridani obrazku do slozky 'imgs/imgs_section'
             if($fileMove){
                 GoodsDB::addCategory($czechNameOfCategory, $englishNameOfCategory, $image,0);
-                return true;
             }
-            return false;
         }else{
             $category = GoodsDB::selectCategoryByName($englishNameOfCategory);
             GoodsDB::updateCategoryStatusAndImage($category["id_category"],0,$image);
-            return true;
         }
     }
     public static function printAllCategoriesAsAdmin()

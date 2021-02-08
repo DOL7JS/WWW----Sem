@@ -13,9 +13,9 @@ class OrderControl
     {
         if(UserDB::checkUserUniqueAddress($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,$_SESSION["idUser"])){//zjisti se jestli je adresa unikatni
             if(empty($_SESSION["delivery_info"]["save_delivery_info"])){//rozhoduje se, zda se ma adresa ulozit
-                UserDB::insertAddressToDeliveryInfo($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,0);
+                UserDB::insertAddressToDeliveryInfo($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,0,$_SESSION["idUser"]);
             }else{
-                UserDB::insertAddressToDeliveryInfo($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,1);
+                UserDB::insertAddressToDeliveryInfo($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,1,$_SESSION["idUser"]);
             }
             //pridani objednavky s posledni vlozenou adresou
             OrderDB::addOrder($_SESSION["idUser"],$_SESSION["delivery_info"]["paymentMethod"],$_SESSION["delivery_info"]["deliveryMethod"],UserDB::selectIdOfLastAddedDeliveryInfo());
@@ -29,10 +29,6 @@ class OrderControl
             }
         }
         $order = OrderDB::selectLastAddedOrder();
-        if(UserDB::checkUserUniqueAddress($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,$_SESSION["idUser"])){//aby se nemnozila duplicita v user_delivery_info
-            //vlozi se pouze pokud uzivatel jeste nema prirazenou tuto adresu
-            UserDB::insertIdAddressToUserDeliveryInfo($order["delivery_info_id_delivery_info"],$_SESSION["idUser"]);
-        }
         $i =0;
         foreach ($_SESSION["cart"] as $id => $value) {//prochazeni polozek v kosiku
             foreach ($value as $size=>$vv){

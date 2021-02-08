@@ -21,9 +21,7 @@ class UserControl
             }
             OrderDB::deleteOrdersByUser($idUser);
         }
-        $addresses = UserDB::selectAddressesOfUser($idUser);
-        UserDB::deleteUserDeliveryInfo($idUser);
-        UserDB::deleteDeliveryInfo($addresses);
+        UserDB::deleteDeliveryInfoOfUser($idUser);
         UserDB::deleteUser($idUser);
     }
     public static function editUser($idUser,$email,$password,$role){//uprava uzivatele
@@ -89,7 +87,7 @@ class UserControl
     }
 
     public static function printAllAddressesOfUser(){
-        $addresses = UserDB::selectAddressesOfUser($_SESSION["idUser"]);
+        $addresses = UserDB::selectAddressesOfUserOLD($_SESSION["idUser"]);
         foreach ($addresses as $row){//prochazeni adres a jejich vypis
             echo '<div class="listRow">
                       <div class="detailsInRow detailsInRowAdr">';
@@ -129,10 +127,8 @@ class UserControl
     }
     public static function addDeliveryInfo($first_name,$last_name,$phone_number,$ciry,$street,$home_number,$zip_code,$idUser){
         if(UserDB::checkUserUniqueAddress($first_name,$last_name,$phone_number,$ciry,$street,$home_number,$zip_code,$idUser)){//"JE UNIQUE";
-            UserDB::insertAddressToDeliveryInfo($first_name,$last_name,$phone_number,$ciry,$street,$home_number,$zip_code,1);
-            UserDB::insertIdAddressToUserDeliveryInfo(UserDB::selectIdOfLastAddedDeliveryInfo(),$_SESSION["idUser"]);
+            UserDB::insertAddressToDeliveryInfo($first_name,$last_name,$phone_number,$ciry,$street,$home_number,$zip_code,1,$_SESSION["idUser"]);
         }else{//"Neni UNIQUE";
-            echo "IM HERE";
             UserDB::updateAddressStatus($first_name,$last_name,$phone_number,$ciry,$street,$home_number,$zip_code,$idUser,1);
         }
     }
@@ -225,7 +221,7 @@ class UserControl
                     <label>Vyplnit adresu: </label>
                     <select onchange="this.form.submit()"  name="addressOption">
                         <option disabled selected>Vyberte adresu</option>';
-       $result = UserDB::selectAddressesOfUser($_SESSION["idUser"]);
+       $result = UserDB::selectAddressesOfUserOLD($_SESSION["idUser"]);
         foreach ($result as $row) {//prochazeni adres k vyplneni
             if(!empty($_POST["addressOption"])&&$_POST["addressOption"]==$row["id_delivery_info"]){
                 echo '<option selected value=' . $row["id_delivery_info"] . ' >' . $row["city"] . '</option>';

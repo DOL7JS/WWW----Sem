@@ -9,10 +9,9 @@ class UserDB
         $result->execute();
         return $result->fetchAll();
     }
-    private static function selectIdAddressesOfUser($idUser){
+    private static function selectAddressesOfUser($idUser){
         $conn = connection::getConnection();
-        $result = $conn->prepare("SELECT DISTINCT * FROM db_dev.user_delivery_info 
-        JOIN delivery_info di on di.id_delivery_info = user_delivery_info.delivery_info_id_delivery_info 
+        $result = $conn->prepare("SELECT DISTINCT * FROM db_dev.delivery_info 
         WHERE user_id_user = :userId AND saved_address=1");
         $result->bindParam("userId",$idUser);
         $result->execute();
@@ -22,8 +21,6 @@ class UserDB
     public static function selectIdAddress($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,$idUser){
         $conn = connection::getConnection();
         $result = $conn->prepare("SELECT * FROM db_dev.delivery_info 
-    JOIN user_delivery_info udi on delivery_info.id_delivery_info = udi.delivery_info_id_delivery_info 
-    JOIN user u on u.id_user = udi.user_id_user 
     WHERE first_name = :first_name AND last_name = :last_name AND
         phone_number = :phone_number AND city = :city AND street = :street AND
         home_number = :home_number AND zip_code = :zip_code AND user_id_user = :id_user");
@@ -38,22 +35,17 @@ class UserDB
         $result->execute();
         return $result->fetch();
     }
-    public static function selectAddressesOfUser($idUser){
+    public static function selectAddressesOfUserOLD($idUser){
         $conn = connection::getConnection();
-        $idsOfAddresses = self::selectIdAddressesOfUser($idUser);
-        $ar = array();
-        foreach($idsOfAddresses as $id){
-            $result = $conn->prepare("SELECT * FROM db_dev.delivery_info WHERE id_delivery_info = :idDeliveryInfo AND saved_address = 1;");
-            $result->bindParam(":idDeliveryInfo",$id["delivery_info_id_delivery_info"]);
-            $result->execute();
-            $ar[] = $result->fetch();
-        }
-        return $ar;
+        $result = $conn->prepare("SELECT * FROM db_dev.delivery_info WHERE user_id_user = :idUser AND saved_address = 1;");
+        $result->bindParam(":idUser",$idUser);
+        $result->execute();
+        return $result->fetchAll();
     }
-    public static function insertAddressToDeliveryInfo($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,$saveAddress){
+    public static function insertAddressToDeliveryInfo($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,$saveAddress,$idUser){
         $conn = connection::getConnection();
-            $result = $conn->prepare("INSERT INTO db_dev.delivery_info (first_name, last_name, phone_number, city, street, home_number, zip_code,saved_address) 
-                                    VALUES (:first_name,:last_name,:phone_number,:city,:street,:home_number,:zip_code,:saveAddres)");
+            $result = $conn->prepare("INSERT INTO db_dev.delivery_info (first_name, last_name, phone_number, city, street, home_number, zip_code,saved_address,user_id_user) 
+                                    VALUES (:first_name,:last_name,:phone_number,:city,:street,:home_number,:zip_code,:saveAddres,:idUser)");
             $result->bindParam(":first_name",$first_name);
             $result->bindParam(":last_name",$last_name);
             $result->bindParam(":phone_number",$phone_number);
@@ -62,6 +54,7 @@ class UserDB
             $result->bindParam(":home_number",$home_number);
             $result->bindParam(":zip_code",$zip_code);
             $result->bindParam(":saveAddres",$saveAddress);
+            $result->bindParam(":idUser",$idUser);
 
             $result->execute();
 
@@ -73,20 +66,11 @@ class UserDB
         return $result->fetch()["id_delivery_info"];
 
     }
-    public static function insertIdAddressToUserDeliveryInfo($deliveryInfoId,$idUser){
-        $conn = connection::getConnection();
-        $result = $conn->prepare("INSERT INTO db_dev.user_delivery_info (delivery_info_id_delivery_info, user_id_user) VALUES (:delivery_info_id,:user_id)");
-        $result->bindParam(":delivery_info_id",$deliveryInfoId);
-        $result->bindParam(":user_id",$idUser);
-        $result->execute();
-    }
 
     public static function checkUserUniqueAddress($first_name,$last_name,$phone_number,$city,$street,$home_number,$zip_code,$idUser)
     {
         $conn = connection::getConnection();
         $result = $conn->prepare("SELECT * FROM db_dev.delivery_info 
-    JOIN user_delivery_info udi on delivery_info.id_delivery_info = udi.delivery_info_id_delivery_info 
-    JOIN user u on u.id_user = udi.user_id_user 
     WHERE first_name = :first_name AND last_name = :last_name AND
         phone_number = :phone_number AND city = :city AND street = :street AND
           home_number = :home_number AND zip_code = :zip_code AND user_id_user = :idUser");
@@ -106,9 +90,8 @@ class UserDB
     {
         $conn = connection::getConnection();
         $result = $conn->prepare("UPDATE db_dev.delivery_info 
-    JOIN user_delivery_info udi on delivery_info.id_delivery_info = udi.delivery_info_id_delivery_info
-    JOIN user SET saved_address=:saveAddress
-    WHERE first_name= :first_name AND last_name= :last_name AND phone_number= :phone_number AND
+            SET saved_address=:saveAddress
+            WHERE first_name= :first_name AND last_name= :last_name AND phone_number= :phone_number AND
           city= :city AND street= :street AND home_number= :home_number AND 
           zip_code= :zip_code AND user_id_user= :idUser");
         $result->bindParam(":first_name",$first_name);
@@ -196,22 +179,13 @@ class UserDB
         $result->execute();
     }
 
-    public static function deleteUserDeliveryInfo($idUser)
+
+    public static function deleteDeliveryInfoOfUser($idUser)
     {
         $conn = connection::getConnection();
-        $result = $conn->prepare("DELETE FROM db_dev.user_delivery_info WHERE user_id_user= :idUser");
+        $result = $conn->prepare("DELETE FROM db_dev.delivery_info WHERE user_id_user= :idUser");
         $result->bindParam(":idUser",$idUser);
         $result->execute();
-    }
-
-    public static function deleteDeliveryInfo($addreses)
-    {
-        $conn = connection::getConnection();
-        foreach ($addreses as $id){
-            $result = $conn->prepare("DELETE FROM db_dev.delivery_info WHERE id_delivery_info= :idDeliveryInfo");
-            $result->bindParam(":idDeliveryInfo",$id);
-            $result->execute();
-        }
     }
 
 

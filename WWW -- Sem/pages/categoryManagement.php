@@ -2,10 +2,11 @@
 
 if(!empty($_POST["addCategoryButton"])&&ValidityChecker::checkAddCategory()){//checkValidity
     AdminControl::addCategory($_POST["categoryNameCzech"],$_POST["categoryNameEnglish"],$_FILES['Filename']['name']);
+    Header("Location:index.php?pages=categoryManagement");
 }
 if(!empty($_GET["action"])&&$_GET["action"]=="deleteCategory"){
     AdminControl::deleteCategory($_GET["goodsID"]);
-    echo $_GET["goodsID"];
+    Header("Location:index.php?pages=categoryManagement");
 }
 if(!empty($_POST["exportJson"])){
     AdminControl::exportToJSon();
