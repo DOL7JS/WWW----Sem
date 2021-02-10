@@ -87,7 +87,7 @@ class OrderControl
         echo '</div>';
 
         echo '<form class="completeOrder" action="" method="post">';
-        echo '<input id="completeOrderButton" name="completeOrder" type="submit" value="Objednat">';
+        echo '<input class="completeOrderButton" name="completeOrder" type="submit" value="Objednat">';
         echo '</form>';
 
         echo '</div>';

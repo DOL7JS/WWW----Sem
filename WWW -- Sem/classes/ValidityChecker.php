@@ -226,4 +226,20 @@ class ValidityChecker
         return true;
     }
 
+    public static function checkEditAttribute()
+    {
+        $errorMsg = '';
+        if(empty($_POST["categoryNameCzech"])){
+            $errorMsg .= 'Vyplnte český název kategorie\n';
+        }
+        if(empty($_POST["categoryNameEnglish"])){
+            $errorMsg .= 'Vyplnte anglický název kategorie\n';
+        }
+        if(!empty($errorMsg)){
+            UserControl::printInformation($errorMsg);
+            return false;
+        }
+        return true;
+    }
+
 }

@@ -70,7 +70,7 @@ class CartControl
                             echo 'Celkova cena objednavky: '.$totalPrice." Kč";
                         echo '</div>
                         <form class="completeOrder" action="index.php?pages=cart" method="post">
-                            <input name="completeOrder" type="submit" value="Přejít k platbě">
+                            <input class="completeOrderButton" name="completeOrder" type="submit" value="Přejít k platbě">
                         </form>
                       </div>
                     </div>';

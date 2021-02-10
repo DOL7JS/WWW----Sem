@@ -455,5 +455,34 @@ class GoodsDB
         return $result->fetch();
     }
 
+    public static function selectCategoryById($categoryID)
+    {
+        $conn = connection::getConnection();
+        $result = $conn->prepare("SELECT * FROM db_dev.CATEGORY WHERE id_category = :category_id");
+        $result->bindParam(":category_id",$categoryID);
+        $result->execute();
+        return $result->fetch();
+    }
+
+    public static function updateCategoryWithImage($id_category, $czech_name, $english_name, $image)
+    {
+        $conn = connection::getConnection();
+        $result = $conn->prepare("UPDATE db_dev.category SET name=:english_name,czech_name=:czech_name,image=:image WHERE id_category = :idCategory");
+        $result->bindParam(":english_name",$english_name);
+        $result->bindParam(":czech_name",$czech_name);
+        $result->bindParam(":image",$image);
+        $result->bindParam(":idCategory",$id_category);
+        $result->execute();
+    }
+    public static function updateCategoryWithoutImage($id_category, $czech_name, $english_name)
+    {
+        $conn = connection::getConnection();
+        $result = $conn->prepare("UPDATE db_dev.category SET name=:english_name,czech_name=:czech_name WHERE id_category = :idCategory");
+        $result->bindParam(":english_name",$english_name);
+        $result->bindParam(":czech_name",$czech_name);
+        $result->bindParam(":idCategory",$id_category);
+        $result->execute();
+    }
+
 
 }

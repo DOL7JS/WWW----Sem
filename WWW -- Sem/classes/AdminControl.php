@@ -136,9 +136,10 @@ class AdminControl
             echo '<br>';
             echo "Anglický název: ".$category["name"];
             echo '</div>';
-            echo '<img src="'.$category["image"].'" class="w100h100">';
+            echo '<img src="'.$category["image"].'" class="w100h100 pRelTop15">';
             echo '<div id="btnsInCategoryManagement" class="btnsInList">';
-            echo '<a href="index.php?pages=categoryManagement&action=deleteCategory&goodsID=' . $category["id_category"] . '"><img class="w50h50" src="./imgs/icons/trash.png"></a>';
+            echo '<a href="index.php?pages=categoryManagement&action=deleteCategory&categoryID=' . $category["id_category"] . '"><img class="w50h50" src="./imgs/icons/trash.png"></a>';
+            echo '<a href="index.php?pages=categoryManagement&action=editCategory&categoryID=' . $category["id_category"] . '"><img class="w50h50" src="./imgs/icons/edit.png"></a>';
             echo '<br>';
 
             echo '</div>';

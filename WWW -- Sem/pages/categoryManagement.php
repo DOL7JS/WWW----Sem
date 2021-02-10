@@ -5,8 +5,11 @@ if(!empty($_POST["addCategoryButton"])&&ValidityChecker::checkAddCategory()){//c
     Header("Location:index.php?pages=categoryManagement");
 }
 if(!empty($_GET["action"])&&$_GET["action"]=="deleteCategory"){
-    AdminControl::deleteCategory($_GET["goodsID"]);
+    AdminControl::deleteCategory($_GET["categoryID"]);
     Header("Location:index.php?pages=categoryManagement");
+}
+if(!empty($_GET["action"])&&$_GET["action"]=="editCategory"){
+    Header("Location:index.php?pages=editCategory&categoryID=".$_GET["categoryID"]);
 }
 if(!empty($_POST["exportJson"])){
     AdminControl::exportToJSon();
@@ -19,6 +22,7 @@ echo '<form method="post" action="">
         <input type="submit" name="exportJson" value="Export JSON" id="exportJsonButton">
         <input type="submit" name="importJson" value="Import JSON" id="importJsonButton">
     </form>
+    
   <div class=list>';
 AdminControl::printFormAddCategory();
 AdminControl::printAllCategoriesAsAdmin();
